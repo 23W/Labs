@@ -8,16 +8,6 @@ using System.Threading.Tasks;
 
 namespace L1
 {
-    interface IFunction
-    {
-        double CalcValue(double[] x);
-    }
-
-    interface IFunctionWithGradient : IFunction
-    {
-        double[] CalcGradient(double[] x);
-    }
-
     class Function : IFunctionWithGradient
     {
         public int N { get; init; } = 0;
