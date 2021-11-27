@@ -1,4 +1,7 @@
-﻿using System;
+﻿using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -59,30 +62,105 @@ namespace L2
 
         void UpdateControls()
         {
-            m_listView.BeginUpdate();
-            m_listView.Items.Clear();
-
-            foreach(var e in TestPlan.Experiments)
+            // List View
             {
-                var minX = string.Join("; ", e.BestResult.MinX.Select(x => $"{x:F3}"));
+                m_listView.BeginUpdate();
+                m_listView.Items.Clear();
 
-                m_listView.Items.Add(new ListViewItem(new string[] { $"{e.Minimizer.Method}",
-                                                                     $"{e.SuccededAttempts}",
-                                                                     $"{e.AvgTime_ms:F3}",
-                                                                     $"{e.BestResult.Steps}",
-                                                                     $"{e.BestResult.MinF:G4}",
-                                                                     minX,
-                                                                    }));
+                foreach (var e in TestPlan.Experiments)
+                {
+                    var minX = string.Join("; ", e.BestResult.MinX.Select(x => $"{x:F3}"));
+
+                    m_listView.Items.Add(new ListViewItem(new string[] { GetMethodTitle(e.Minimizer.Method),
+                                                                         $"{e.SuccededAttempts}",
+                                                                         $"{e.AvgTime_ms:F3}",
+                                                                         $"{e.BestResult.Steps}",
+                                                                         $"{e.BestResult.MinF:G4}",
+                                                                         minX }));
+                }
+
+                m_methodColumn.Width = -2;
+                m_attemptsColumn.Width = -2;
+                m_avgTimeColumn.Width = -2;
+                m_stepsColumnt.Width = -2;
+                m_minFColumn.Width = -2;
+                m_minXColumn.Width = -2;
+
+                m_listView.EndUpdate();
             }
 
-            m_methodColumn.Width = -2;
-            m_attemptsColumn.Width = -2;
-            m_avgTimeColumn.Width = -2;
-            m_stepsColumnt.Width = -2;
-            m_minFColumn.Width = -2;
-            m_minXColumn.Width = -2;
+            // Time Plot View
+            {
+                var plotModel = new PlotModel() { Background = OxyColors.White };
 
-            m_listView.EndUpdate();
+                var timeCategoryAxis = new CategoryAxis { Position = AxisPosition.Left, IsPanEnabled = false, IsZoomEnabled = false };
+                var timeAxis = new LinearAxis { Title = "Time.avg (ms)", Position = AxisPosition.Bottom, IsPanEnabled = false, IsZoomEnabled = false };
+
+                plotModel.Axes.Add(timeCategoryAxis);
+                plotModel.Axes.Add(timeAxis);
+
+                var timeSeries = new BarSeries() { FillColor = OxyColors.BlueViolet, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+
+                foreach (var e in TestPlan.Experiments.Reverse())
+                {
+                    timeSeries.Items.Add(new BarItem() { Value = e.AvgTime_ms });
+                    timeCategoryAxis.Labels.Add(GetMethodTitle(e.Minimizer.Method));
+                }
+
+                plotModel.Series.Add(timeSeries);
+                
+                m_timePlotView.Model = plotModel;
+            }
+
+            // Steps Plot View
+            {
+                var plotModel = new PlotModel() { Background = OxyColors.White };
+
+                var stepsCategoryAxis = new CategoryAxis { Position = AxisPosition.Left, IsPanEnabled = false, IsZoomEnabled = false };
+                var stepsAxis = new LinearAxis { Title = "Steps", Position = AxisPosition.Bottom, IsPanEnabled = false, IsZoomEnabled = false };
+
+                plotModel.Axes.Add(stepsCategoryAxis);
+                plotModel.Axes.Add(stepsAxis);
+
+                var stepsSeries = new BarSeries() { FillColor = OxyColors.Red, StrokeColor = OxyColors.Black, StrokeThickness = 1 };
+
+                foreach (var e in TestPlan.Experiments.Reverse())
+                {
+                    stepsSeries.Items.Add(new BarItem() { Value = e.BestResult.Steps });
+                    stepsCategoryAxis.Labels.Add(GetMethodTitle(e.Minimizer.Method));
+                }
+
+                plotModel.Series.Add(stepsSeries);
+
+                m_stespPlotView.Model = plotModel;
+            }
+        }
+
+        string GetMethodTitle(FunctionOptimization.MinMethod method)
+        {
+            var res = string.Empty;
+
+            switch (method)
+            {
+                case FunctionOptimization.MinMethod.Gradient:
+                    res = "Gradient";
+                    break;
+                case FunctionOptimization.MinMethod.BFGS:
+                case FunctionOptimization.MinMethod.BFGS_B:
+                    res = "BFGS";
+                    break;
+                case FunctionOptimization.MinMethod.Simplex:
+                    res = "Simplex";
+                    break;
+                case FunctionOptimization.MinMethod.LevenbergMarquardt:
+                    res = "Leven.-Marq.";
+                    break;
+                case FunctionOptimization.MinMethod.Newton:
+                    res = "Newton";
+                    break;
+            }
+
+            return res;
         }
 
         void OnRun(object sender, EventArgs e)
