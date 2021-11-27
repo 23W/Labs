@@ -11,7 +11,7 @@ using MathNet.Numerics.Optimization.ObjectiveFunctions;
 
 namespace L2
 {
-    class FunctionOptimization
+    public class FunctionOptimization
     {
         public struct MinResult
         {

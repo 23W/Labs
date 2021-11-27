@@ -1,16 +1,16 @@
 ﻿namespace L2
 {
-    interface IFunction
+    public interface IFunction
     {
         double CalcValue(double[] x);
     }
 
-    interface IFunctionWithGradient : IFunction
+    public interface IFunctionWithGradient : IFunction
     {
         double[] CalcGradient(double[] x);
     }
 
-    interface IFunctionWithHessian : IFunctionWithGradient
+    public interface IFunctionWithHessian : IFunctionWithGradient
     {
         double[,] CalcHessian(double[] x);
     }
