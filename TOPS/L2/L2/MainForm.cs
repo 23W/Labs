@@ -19,8 +19,8 @@ namespace L2
 
         private void OnRun(object sender, EventArgs e)
         {
-            var f = new RosenbrockFunction();
-            var x0 = new double[] { -1.2, 1.0 };
+            var f = new Function(5);
+            var x0 = f.X0;
 
             var lm_opt = new FunctionOptimization(f) { Method = FunctionOptimization.MinMethod.LevenbergMarquardt, Tolerance = 1e-15, MaxIterations = 10000 };
             var lm_min = lm_opt.FindMin(x0);
