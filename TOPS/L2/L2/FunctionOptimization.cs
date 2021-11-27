@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MathNet.Numerics.LinearAlgebra;
-using MathNet.Numerics.LinearAlgebra.Double;
+﻿using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.Optimization;
-using MathNet.Numerics.Optimization.ObjectiveFunctions;
+using System;
+using System.Diagnostics;
 
 namespace L2
 {
     public class FunctionOptimization
     {
+        #region Types
+
         public struct MinResult
         {
             public double MinF;
@@ -32,16 +28,27 @@ namespace L2
             Newton,
         }
 
+        #endregion
+
+        #region Properties
+
         public IFunction F { get; init; } = default(IFunction);
         public double Tolerance { get; set; } = 1e-8;
         public int MaxIterations { get; set; } = 1000000;
-        public bool UseFGradient { get; set; } = true;
         public MinMethod Method { get; set; } = MinMethod.Gradient;
+
+        #endregion
+
+        #region Construction
 
         public FunctionOptimization(IFunction f)
         {
             F = f;
         }
+
+        #endregion
+
+        #region Methods
 
         public MinResult FindMin(double[] x0, double[] lowerBound = default(double[]), double[] upperBound = default(double[]))
         {
@@ -165,6 +172,10 @@ namespace L2
             return min;
         }
 
+        #endregion
+
+        #region Helper Methods
+
         static Vector<double> OptionalBounds(double[] bound)
         {
             return (bound != default(double[])) ? CreateVector.DenseOfArray(bound) : null;
@@ -210,53 +221,57 @@ namespace L2
 
             return objective;
         }
-    }
 
-    class LevenbergMarquardtModel
-    {
-        internal IFunctionWithGradient F { get; init; }
-        internal int N { get; init; }
+        #endregion
 
-        internal Vector<double> ModelX => Vector<double>.Build.Dense(N);
-        internal Vector<double> ModelY => Vector<double>.Build.Dense(N);
+        #region Helper Classes
 
-        internal LevenbergMarquardtModel(IFunctionWithGradient f, int n)
+        class LevenbergMarquardtModel
         {
-            Debug.Assert(n > 0);
+            internal IFunctionWithGradient F { get; init; }
+            internal int N { get; init; }
 
-            F = f;
-            N = n;
-        }
+            internal Vector<double> ModelX => Vector<double>.Build.Dense(N);
+            internal Vector<double> ModelY => Vector<double>.Build.Dense(N);
 
-        internal Vector<double> Model(Vector<double> p, Vector<double> x)
-        {
-            var y = CreateVector.Dense<double>(x.Count);
-            var pa = p.ToArray();
-
-            for (int i = 0; i < x.Count; i++)
+            internal LevenbergMarquardtModel(IFunctionWithGradient f, int n)
             {
-                y[i] = F.CalcValue(pa);
+                Debug.Assert(n > 0);
+
+                F = f;
+                N = n;
             }
-            
-            return y;
-        }
 
-        internal Matrix<double> DerivativesDerivatives(Vector<double> p, Vector<double> x)
-        {
-            var derivatives = Matrix<double>.Build.Dense(x.Count, p.Count);
-            var pa = p.ToArray();
-
-            for (int i = 0; i < x.Count; i++)
+            internal Vector<double> Model(Vector<double> p, Vector<double> x)
             {
-                var g = F.CalcGradient(pa);
-                for (int gi = 0; gi < g.Length; gi++)
+                var y = CreateVector.Dense<double>(x.Count);
+                var pa = p.ToArray();
+
+                for (int i = 0; i < x.Count; i++)
                 {
-                    derivatives[i, gi] = g[gi];
+                    y[i] = F.CalcValue(pa);
                 }
+
+                return y;
             }
-            return derivatives;
+
+            internal Matrix<double> DerivativesDerivatives(Vector<double> p, Vector<double> x)
+            {
+                var derivatives = Matrix<double>.Build.Dense(x.Count, p.Count);
+                var pa = p.ToArray();
+
+                for (int i = 0; i < x.Count; i++)
+                {
+                    var g = F.CalcGradient(pa);
+                    for (int gi = 0; gi < g.Length; gi++)
+                    {
+                        derivatives[i, gi] = g[gi];
+                    }
+                }
+                return derivatives;
+            }
         }
 
-
+        #endregion
     }
 }

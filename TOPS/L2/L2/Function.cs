@@ -5,14 +5,24 @@ namespace L2
 {
     class Function : IFunctionWithHessian
     {
+        #region Properties
+
         public int N { get; init; } = 0;
 
         public double[] X0 => CalcInitialGuess();
+
+        #endregion
+
+        #region Construction
 
         public Function(int n)
         {
             N = n;
         }
+
+        #endregion
+
+        #region Interface Implementation
 
         public double CalcValue(double[] x)
         {
@@ -61,16 +71,18 @@ namespace L2
             return h;
         }
 
+        #endregion
+
+        #region Helper Methods
+
         double CalcElement(int i, double x)
         {
-            //var r = Math.Pow((i * x - N), 2 * i) / (10.0 * Math.Pow(i, 3));
             var r = Math.Pow((i * x - N), 2 * i) / (10 * i * i * i);
             return r;
         }
 
         double CalcPartialDeriviate(int i, double x)
         {
-            //var d1 = (2 * i * i * Math.Pow((i * x) - N, (2 * i) - 1)) / (10.0 * Math.Pow(i, 3));
             var d = (Math.Pow((i * x) - N, (2 * i) - 1)) / (5.0 * i);
 
             if (!double.IsFinite(d))
@@ -87,7 +99,7 @@ namespace L2
 
             if (!double.IsFinite(d))
             {
-                Debug.WriteLine("Issue: non finite partial deriviate!");
+                Debug.WriteLine("Issue: non finite second partial deriviate!");
             }
 
             return d;
@@ -103,5 +115,7 @@ namespace L2
 
             return x0;
         }
+
+        #endregion
     }
 }

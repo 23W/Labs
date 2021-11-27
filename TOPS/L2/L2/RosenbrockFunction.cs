@@ -5,7 +5,13 @@ namespace L2
 {
     public class RosenbrockFunction : IFunctionWithHessian
     {
+        #region Properties
+
         public int N => 2;
+
+        #endregion
+
+        #region Interface Implementation
 
         public double CalcValue(double[] x)
         {
@@ -38,5 +44,7 @@ namespace L2
             hessian[1, 0] = hessian[0, 1];
             return hessian;
         }
+
+        #endregion
     }
 }

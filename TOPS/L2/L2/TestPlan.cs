@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace L2
 {
     class Test
     {
+        #region Properties
+
         internal IFunction F { get; init; }
         internal double[] X0 { get; init; }
 
@@ -19,12 +18,20 @@ namespace L2
         internal FunctionOptimization.MinResult BestResult { get; private set; }
         internal double AvgTime_ms { get; private set; }
 
+        #endregion
+
+        #region Construction
+
         internal Test(IFunction f, double[] x0, FunctionOptimization minimizer)
         {
             F = f;
             X0 = x0;
             Minimizer = minimizer;
         }
+
+        #endregion
+
+        #region Methods
 
         internal void Run()
         {
@@ -54,11 +61,19 @@ namespace L2
                 BestResult = results.Aggregate((min, next) => min.MinF < next.MinF ? min : next);
             }
         }
+
+        #endregion
     }
 
     class TestPlan
     {
+        #region Properties
+
         internal IEnumerable<Test> Experiments { get; init; }
+
+        #endregion
+
+        #region Methods
 
         internal void Run()
         {
@@ -67,5 +82,7 @@ namespace L2
                 e.Run();
             }
         }
+
+        #endregion
     }
 }

@@ -15,7 +15,13 @@ namespace L2
 {
     public partial class MainForm : Form
     {
+        #region Properties
+
         TestPlan TestPlan { get; init; }
+
+        #endregion
+
+        #region Construction
 
         public MainForm()
         {
@@ -33,6 +39,10 @@ namespace L2
 
             InitializeComponent();
         }
+
+        #endregion
+
+        #region Methods
 
         void ColdStart()
         {
@@ -136,7 +146,7 @@ namespace L2
             }
         }
 
-        string GetMethodTitle(FunctionOptimization.MinMethod method)
+        static string GetMethodTitle(FunctionOptimization.MinMethod method)
         {
             var res = string.Empty;
 
@@ -163,6 +173,10 @@ namespace L2
             return res;
         }
 
+        #endregion
+
+        #region Event Handlers
+
         void OnRun(object sender, EventArgs e)
         {
             Run();
@@ -173,5 +187,7 @@ namespace L2
         {
             ColdStart();
         }
+
+        #endregion
     }
 }
