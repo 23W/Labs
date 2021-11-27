@@ -28,7 +28,8 @@ namespace L2
             BFGS,
             BFGS_B,
             Simplex,
-            LevenbergMarquardt
+            LevenbergMarquardt,
+            Newton,
         }
 
         public IFunction F { get; init; } = default(IFunction);
@@ -46,7 +47,7 @@ namespace L2
         {
             MinResult min;
 
-            var objective = BuildObjectiveFunction(F, x0.Length, UseFGradient, lowerBound, upperBound);
+            var objective = BuildObjectiveFunction(F);
 
             try
             {
@@ -135,6 +136,18 @@ namespace L2
                                            result.ReasonForExit != ExitCondition.ExceedIterations;
                             break;
                         }
+                    case MinMethod.Newton:
+                        {
+                            var result = NewtonMinimizer.Minimum(objective, CreateVector.DenseOfArray(x0), Tolerance, MaxIterations);
+
+                            min.MinX = result.MinimizingPoint.ToArray();
+                            min.MinF = F.CalcValue(min.MinX);
+                            min.Steps = result.Iterations;
+                            min.Succeded = result.ReasonForExit != ExitCondition.None &&
+                                           result.ReasonForExit != ExitCondition.InvalidValues &&
+                                           result.ReasonForExit != ExitCondition.ExceedIterations;
+                            break;
+                        }
                     default:
                         min = default(MinResult);
                         min.Succeded = false;
@@ -171,11 +184,19 @@ namespace L2
             return CreateVector.DenseOfArray(bound);
         }
 
-        static IObjectiveFunction BuildObjectiveFunction(IFunction f, int n, bool ensureGradient = false, double[] lowerBound = default(double[]), double[] upperBound = default(double[]))
+        static IObjectiveFunction BuildObjectiveFunction(IFunction f)
         {
             var objective = default(IObjectiveFunction);
 
-            if ((f is IFunctionWithGradient) && ensureGradient)
+            if (f is IFunctionWithHessian)
+            {
+                var hf = f as IFunctionWithHessian;
+
+                objective = ObjectiveFunction.GradientHessian(x => hf.CalcValue(x.ToArray()),
+                                                              x => CreateVector.DenseOfArray(hf.CalcGradient(x.ToArray())),
+                                                              x => CreateMatrix.DenseOfArray(hf.CalcHessian(x.ToArray())));
+            }
+            else if (f is IFunctionWithGradient)
             {
                 var gf = f as IFunctionWithGradient;
 
@@ -185,9 +206,6 @@ namespace L2
             else
             {
                 objective = ObjectiveFunction.Value(x => f.CalcValue(x.ToArray()));
-                objective = new ForwardDifferenceGradientObjectiveFunction(objective,
-                                                                           SafeBounds(lowerBound, n, -1),
-                                                                           SafeBounds(upperBound, n, 1));
             }
 
             return objective;

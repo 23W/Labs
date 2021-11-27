@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace L2
 {
-    public class RosenbrockFunction : IFunctionWithGradient
+    public class RosenbrockFunction : IFunctionWithHessian
     {
         public int N => 2;
 
@@ -27,6 +27,16 @@ namespace L2
             }
 
             return prime;
+        }
+
+        public double[,] CalcHessian(double[] x)
+        {
+            var hessian = new double[2, 2];
+            hessian[0, 0] = 2 - 400 * x[1] + 1200 * x[0] * x[0];
+            hessian[1, 1] = 200;
+            hessian[0, 1] = -400 * x[0];
+            hessian[1, 0] = hessian[0, 1];
+            return hessian;
         }
     }
 }

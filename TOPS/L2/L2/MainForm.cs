@@ -25,6 +25,9 @@ namespace L2
             var lm_opt = new FunctionOptimization(f) { Method = FunctionOptimization.MinMethod.LevenbergMarquardt, Tolerance = 1e-15, MaxIterations = 10000 };
             var lm_min = lm_opt.FindMin(x0);
 
+            var n_opt = new FunctionOptimization(f) { Method = FunctionOptimization.MinMethod.Newton };
+            var n_min = n_opt.FindMin(x0);
+
             var g_opt = new FunctionOptimization(f) { Method = FunctionOptimization.MinMethod.Gradient };
             var g_min = g_opt.FindMin(x0);
 

@@ -9,4 +9,9 @@
     {
         double[] CalcGradient(double[] x);
     }
+
+    interface IFunctionWithHessian : IFunctionWithGradient
+    {
+        double[,] CalcHessian(double[] x);
+    }
 }
