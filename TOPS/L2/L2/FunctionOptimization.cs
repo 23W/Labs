@@ -9,7 +9,7 @@ using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Numerics.Optimization;
 using MathNet.Numerics.Optimization.ObjectiveFunctions;
 
-namespace L1
+namespace L2
 {
     class FunctionOptimization
     {
@@ -27,7 +27,8 @@ namespace L1
             Gradient,
             BFGS,
             BFGS_B,
-            Simplex
+            Simplex,
+            LevenbergMarquardt
         }
 
         public IFunction F { get; init; } = default(IFunction);
@@ -45,50 +46,7 @@ namespace L1
         {
             MinResult min;
 
-             var loB = new Lazy<double[]>(() =>
-             {
-                if (lowerBound == default(double[]))
-                {
-                    lowerBound = new double[x0.Length];
-                    for (var i = 0; i < lowerBound.Length; i++)
-                    {
-                        lowerBound[i] = (double.MaxValue - 1) * (-1);
-                    }
-                }
-
-                return lowerBound;
-            });
-
-            var upB = new Lazy<double[]>(() =>
-            {
-                if (upperBound == default(double[]))
-                {
-                    upperBound = new double[x0.Length];
-                    for (var i = 0; i < upperBound.Length; i++)
-                    {
-                        upperBound[i] = (double.MaxValue - 1);
-                    }
-                }
-
-                return upperBound;
-            });
-
-            var objective = default(IObjectiveFunction);
-
-            if ((F is IFunctionWithGradient) && UseFGradient)
-            {
-                var gf = F as IFunctionWithGradient;
-
-                objective = ObjectiveFunction.Gradient(x => gf.CalcValue(x.ToArray()),
-                                                       x => Vector<double>.Build.Dense(gf.CalcGradient(x.ToArray())));
-            }
-            else
-            {
-                objective = ObjectiveFunction.Value(x => F.CalcValue(x.ToArray()));
-                objective = new ForwardDifferenceGradientObjectiveFunction(objective,
-                                                                           Vector<double>.Build.Dense(loB.Value),
-                                                                           Vector<double>.Build.Dense(upB.Value));
-            }
+            var objective = BuildObjectiveFunction(F, x0.Length, UseFGradient, lowerBound, upperBound);
 
             try
             {
@@ -97,7 +55,7 @@ namespace L1
                     case MinMethod.Gradient:
                         {
                             var alg = new ConjugateGradientMinimizer(Tolerance, MaxIterations);
-                            var result = alg.FindMinimum(objective, Vector<double>.Build.Dense(x0));
+                            var result = alg.FindMinimum(objective, CreateVector.DenseOfArray(x0));
 
                             min.MinX = result.MinimizingPoint.ToArray();
                             min.MinF = F.CalcValue(min.MinX);
@@ -111,7 +69,7 @@ namespace L1
                         {
                             var alg = new BfgsMinimizer(Tolerance, Tolerance, Tolerance, MaxIterations);
                             var result = alg.FindMinimum(objective,
-                                                         Vector<double>.Build.Dense(x0));
+                                                         CreateVector.DenseOfArray(x0));
 
 
                             min.MinX = result.MinimizingPoint.ToArray();
@@ -126,9 +84,9 @@ namespace L1
                         {
                             var alg = new BfgsBMinimizer(Tolerance, Tolerance, Tolerance, MaxIterations);
                             var result = alg.FindMinimum(objective,
-                                                         Vector<double>.Build.Dense(loB.Value),
-                                                         Vector<double>.Build.Dense(upB.Value),
-                                                         Vector<double>.Build.Dense(x0));
+                                                         SafeBounds(lowerBound, x0.Length, -1),
+                                                         SafeBounds(upperBound, x0.Length, 1),
+                                                         CreateVector.DenseOfArray(x0));
 
 
                             min.MinX = result.MinimizingPoint.ToArray();
@@ -141,7 +99,7 @@ namespace L1
                         }
                     case MinMethod.Simplex:
                         {
-                            var result = NelderMeadSimplex.Minimum(objective, Vector<double>.Build.Dense(x0), Tolerance, MaxIterations);
+                            var result = NelderMeadSimplex.Minimum(objective, CreateVector.DenseOfArray(x0), Tolerance, MaxIterations);
 
                             min.MinX = result.MinimizingPoint.ToArray();
                             min.MinF = F.CalcValue(min.MinX);
@@ -151,7 +109,32 @@ namespace L1
                                            result.ReasonForExit != ExitCondition.ExceedIterations;
                             break;
                         }
+                    case MinMethod.LevenbergMarquardt:
+                        {
+                            if (!(F is IFunctionWithGradient))
+                            {
+                                throw new ArgumentException("Function must support gradient!", nameof(F));
+                            }
 
+                            var modelF = new LevenbergMarquardtModel(F as IFunctionWithGradient, x0.Length);
+                            var objectiveModel = ObjectiveFunction.NonlinearModel(modelF.Model, modelF.DerivativesDerivatives, modelF.ModelX, modelF.ModelY);
+
+                            var result = LevenbergMarquardtMinimizer.Minimum(objectiveModel, CreateVector.DenseOfArray(x0),
+                                                                                             OptionalBounds(lowerBound),
+                                                                                             OptionalBounds(upperBound),
+                                                                                             gradientTolerance: Tolerance,
+                                                                                             stepTolerance: Tolerance,
+                                                                                             functionTolerance: Tolerance,
+                                                                                             maximumIterations: MaxIterations);
+
+                            min.MinX = result.MinimizingPoint.ToArray();
+                            min.MinF = F.CalcValue(min.MinX);
+                            min.Steps = result.Iterations;
+                            min.Succeded = result.ReasonForExit != ExitCondition.None &&
+                                           result.ReasonForExit != ExitCondition.InvalidValues &&
+                                           result.ReasonForExit != ExitCondition.ExceedIterations;
+                            break;
+                        }
                     default:
                         min = default(MinResult);
                         min.Succeded = false;
@@ -168,5 +151,94 @@ namespace L1
 
             return min;
         }
+
+        static Vector<double> OptionalBounds(double[] bound)
+        {
+            return (bound != default(double[])) ? CreateVector.DenseOfArray(bound) : null;
+        }
+
+        static Vector<double> SafeBounds(double[] bound, int n, float scale = 1)
+        {
+            if (bound == default(double[]))
+            {
+                bound = new double[n];
+                for (var i = 0; i < bound.Length; i++)
+                {
+                    bound[i] = (double.MaxValue - 1) * scale;
+                }
+            }
+
+            return CreateVector.DenseOfArray(bound);
+        }
+
+        static IObjectiveFunction BuildObjectiveFunction(IFunction f, int n, bool ensureGradient = false, double[] lowerBound = default(double[]), double[] upperBound = default(double[]))
+        {
+            var objective = default(IObjectiveFunction);
+
+            if ((f is IFunctionWithGradient) && ensureGradient)
+            {
+                var gf = f as IFunctionWithGradient;
+
+                objective = ObjectiveFunction.Gradient(x => gf.CalcValue(x.ToArray()),
+                                                       x => CreateVector.DenseOfArray(gf.CalcGradient(x.ToArray())));
+            }
+            else
+            {
+                objective = ObjectiveFunction.Value(x => f.CalcValue(x.ToArray()));
+                objective = new ForwardDifferenceGradientObjectiveFunction(objective,
+                                                                           SafeBounds(lowerBound, n, -1),
+                                                                           SafeBounds(upperBound, n, 1));
+            }
+
+            return objective;
+        }
+    }
+
+    class LevenbergMarquardtModel
+    {
+        internal IFunctionWithGradient F { get; init; }
+        internal int N { get; init; }
+
+        internal Vector<double> ModelX => Vector<double>.Build.Dense(N);
+        internal Vector<double> ModelY => Vector<double>.Build.Dense(N);
+
+        internal LevenbergMarquardtModel(IFunctionWithGradient f, int n)
+        {
+            Debug.Assert(n > 0);
+
+            F = f;
+            N = n;
+        }
+
+        internal Vector<double> Model(Vector<double> p, Vector<double> x)
+        {
+            var y = CreateVector.Dense<double>(x.Count);
+            var pa = p.ToArray();
+
+            for (int i = 0; i < x.Count; i++)
+            {
+                y[i] = F.CalcValue(pa);
+            }
+            
+            return y;
+        }
+
+        internal Matrix<double> DerivativesDerivatives(Vector<double> p, Vector<double> x)
+        {
+            var derivatives = Matrix<double>.Build.Dense(x.Count, p.Count);
+            var pa = p.ToArray();
+
+            for (int i = 0; i < x.Count; i++)
+            {
+                var g = F.CalcGradient(pa);
+                for (int gi = 0; gi < g.Length; gi++)
+                {
+                    derivatives[i, gi] = g[gi];
+                }
+            }
+            return derivatives;
+        }
+
+
     }
 }

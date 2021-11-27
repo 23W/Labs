@@ -29,13 +29,34 @@ namespace L2
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.m_runButton = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // m_runButton
+            // 
+            this.m_runButton.Location = new System.Drawing.Point(694, 409);
+            this.m_runButton.Name = "m_runButton";
+            this.m_runButton.Size = new System.Drawing.Size(94, 29);
+            this.m_runButton.TabIndex = 0;
+            this.m_runButton.Text = "Run";
+            this.m_runButton.UseVisualStyleBackColor = true;
+            this.m_runButton.Click += new System.EventHandler(this.OnRun);
+            // 
+            // MainForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.m_runButton);
+            this.Name = "MainForm";
             this.Text = "Form1";
+            this.ResumeLayout(false);
+
         }
 
         #endregion
+
+        private System.Windows.Forms.Button m_runButton;
     }
 }
 
