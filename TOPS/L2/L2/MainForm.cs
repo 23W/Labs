@@ -22,7 +22,7 @@ namespace L2
             var f = new Function(5);
             var x0 = f.X0;
 
-            var lm_opt = new FunctionOptimization(f) { Method = FunctionOptimization.MinMethod.LevenbergMarquardt, Tolerance = 1e-15, MaxIterations = 10000 };
+            var lm_opt = new FunctionOptimization(f) { Method = FunctionOptimization.MinMethod.LevenbergMarquardt, Tolerance = 1e-15 };
             var lm_min = lm_opt.FindMin(x0);
 
             var n_opt = new FunctionOptimization(f) { Method = FunctionOptimization.MinMethod.Newton };
@@ -33,6 +33,9 @@ namespace L2
 
             var s_opt = new FunctionOptimization(f) { Method = FunctionOptimization.MinMethod.Simplex };
             var s_min = s_opt.FindMin(x0);
+
+            var b_opt = new FunctionOptimization(f) { Method = FunctionOptimization.MinMethod.BFGS };
+            var b_min = s_opt.FindMin(x0);
         }
     }
 }
