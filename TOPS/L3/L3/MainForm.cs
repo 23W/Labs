@@ -159,7 +159,9 @@ namespace L3
                     }
 
                     var optAnnotation = new LineAnnotation() { Layer = AnnotationLayer.BelowSeries, Type = LineAnnotationType.Vertical, X = m_startPrice, Color = OxyColors.Green };
+                    var maxFAnnotation = new LineAnnotation() { Layer = AnnotationLayer.BelowSeries, Type = LineAnnotationType.Horizontal, Y = m_startOptimal.Value, Color = OxyColors.DarkBlue };
                     plotModel.Annotations.Add(optAnnotation);
+                    plotModel.Annotations.Add(maxFAnnotation);
                  }
 
                 m_pricePlotView.Model = plotModel;
