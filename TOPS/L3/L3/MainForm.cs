@@ -6,5 +6,9 @@ namespace L3
         {
             InitializeComponent();
         }
+
+        private void OnRun(object sender, EventArgs e)
+        {
+        }
     }
 }
