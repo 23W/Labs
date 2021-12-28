@@ -10,6 +10,12 @@ namespace L3
 {
     public class LPSolver
     {
+        public enum LPType
+        {
+            Double,
+            Integer,
+        }
+
         public enum ConstrainType
         {
             Upper,
@@ -29,26 +35,39 @@ namespace L3
             public double[] X;
             public double Value;
 
-            public static Result Empty => new Result() { Succeeded = false, X = new double[] { }, Value =0 };
+            public static Result Empty => new Result() { Succeeded = false, X = new double[] { }, Value = 0 };
         }
 
         LinearProgrammingProblem LPProblem { get; init; }
+        LPType LPProblemType { get; init; }
 
-        public LPSolver(double[] c)
+        public LPSolver(double[] c, LPType type = LPType.Double)
         {
             if (c?.Length == 0)
             {
-                throw new ArgumentNullException("Invalid vector C", nameof(c));
+                throw new InvalidArgumentException(nameof(c));
             }
 
-            LPProblem = new LinearProgrammingProblem(new DoubleVector(c));
+            switch (type)
+            {
+                case LPType.Double:
+                    LPProblem = new LinearProgrammingProblem(new DoubleVector(c));
+                    LPProblemType = type;
+                    break;
+                case LPType.Integer:
+                    LPProblem = new MixedIntegerLinearProgrammingProblem(new DoubleVector(c));
+                    LPProblemType = type;
+                    break;
+                default:
+                    throw new InvalidArgumentException(nameof(type));
+            }
         }
 
         public void AddConstraint(ConstrainType type, double[] a, double b)
         {
             if (a?.Length == 0)
             {
-                throw new ArgumentNullException("Invalid vector A", nameof(a));
+                throw new InvalidArgumentException(nameof(a));
             }
 
             switch (type)
@@ -63,7 +82,7 @@ namespace L3
                     LPProblem.AddEqualityConstraint(new DoubleVector(a), b);
                     break;
                 default:
-                    throw new ArgumentException("invalid type", nameof(type));
+                    throw new InvalidArgumentException(nameof(type));
             }
         }
 
@@ -71,7 +90,7 @@ namespace L3
         {
             if (xIndex < 0 || xIndex >= LPProblem.NumVariables)
             {
-                throw new ArgumentNullException("Invalid value of xIndex", nameof(xIndex));
+                throw new InvalidArgumentException(nameof(xIndex));
             }
 
             switch (type)
@@ -83,7 +102,20 @@ namespace L3
                     LPProblem.AddLowerBound(xIndex, bound);
                     break;
                 default:
-                    throw new ArgumentException("invalide type", nameof(type));
+                    throw new InvalidArgumentException(nameof(type));
+            }
+        }
+
+        public void AddIntegralConstraint(int xIndex)
+        {
+            if (xIndex < 0 || xIndex >= LPProblem.NumVariables)
+            {
+                throw new InvalidArgumentException(nameof(xIndex));
+            }
+
+            if (LPProblemType == LPType.Integer)
+            {
+                (LPProblem as MixedIntegerLinearProgrammingProblem)?.SetIntegrality(xIndex, true);
             }
         }
 
@@ -91,16 +123,35 @@ namespace L3
         {
             var res = Result.Empty;
 
-            var solver = new PrimalSimplexSolverORTools();
-
-            // Solve
-            solver.Solve(LPProblem, minimaze);
-
-            res.Succeeded = solver.Result == ConstrainedOptimizerORTools.SolveResult.Optimal;
-            if (res.Succeeded)
+            switch(LPProblemType)
             {
-                res.X = solver.OptimalX.ToArray();
-                res.Value = solver.OptimalObjectiveFunctionValue;
+                case LPType.Double:
+                    {
+                        var solver = new PrimalSimplexSolverORTools();
+                        solver.Solve(LPProblem, minimaze);
+
+                        res.Succeeded = solver.Result == ConstrainedOptimizerORTools.SolveResult.Optimal;
+                        if (res.Succeeded)
+                        {
+                            res.X = solver.OptimalX.ToArray();
+                            res.Value = solver.OptimalObjectiveFunctionValue;
+                        }
+                    }
+                    break;
+
+                case LPType.Integer:
+                    {
+                        var solver = new DualSimplexSolverORTools();
+                        solver.Solve(LPProblem as MixedIntegerLinearProgrammingProblem, minimaze);
+
+                        res.Succeeded = solver.Result == ConstrainedOptimizerORTools.SolveResult.Optimal;
+                        if (res.Succeeded)
+                        {
+                            res.X = solver.OptimalX.ToArray();
+                            res.Value = solver.OptimalObjectiveFunctionValue;
+                        }
+                    }
+                    break;
             }
             
             return res;
