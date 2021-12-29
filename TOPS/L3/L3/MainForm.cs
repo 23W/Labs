@@ -25,23 +25,6 @@ namespace L3
                 m_startOptimal = taskSolver.Solve();
             }
 
-            // 1
-            //{
-            //    var task = new StarShipTaskProblem();
-            //    var testFeature = StarShipTaskProblem.Feature.Missiles;
-            //    for (double i = 0; i < 400; i++)
-            //    {
-            //        task.Scores[(int)testFeature] = i;
-
-            //        var variantSolver = task.Build();
-            //        var variantRes = variantSolver.Solve();
-            //        if (variantRes.Succeeded)
-            //        {
-            //            Debug.WriteLine($"Target: {variantRes.Value}, X: {string.Join(",", variantRes.X)}");
-            //        }
-            //    }
-            //}
-
             // Price analysis
             {
                 var task = new StarShipTaskProblem();
@@ -96,6 +79,30 @@ namespace L3
                 }
                 m_listView.Items.Add(new ListViewItem(new string[] { $"Max(F)", $"{m_startOptimal.Value:F0}" }));
 
+                ZoneResult priceZone = default(ZoneResult);
+                bool rangeFound = false;
+                foreach(var z in m_priceZoneAnalysis)
+                {
+                    if (Math.Abs(z.Result.Value - m_startOptimal.Value)/Math.Max(z.Result.Value, m_startOptimal.Value) < 0.01)
+                    {
+                        if (rangeFound)
+                        {
+                            priceZone.FromPoint = Math.Min(priceZone.FromPoint, z.FromPoint);
+                            priceZone.ToPoint = Math.Max(priceZone.ToPoint, z.ToPoint);
+                        }
+                        else
+                        {
+                            rangeFound = true;
+                            priceZone = z;
+                        }
+                    }
+                }
+
+                if (rangeFound)
+                {
+                    m_listView.Items.Add(new ListViewItem(new string[] { $"Price. From", $"{priceZone.FromPoint:F0}"}));
+                    m_listView.Items.Add(new ListViewItem(new string[] { $"Price. To", $"{priceZone.ToPoint:F0}" }));
+                }
 
                 m_dataColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
                 m_dataColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
@@ -143,7 +150,7 @@ namespace L3
 
                 // line
                 {
-                    var lineSeries = new LineSeries() { Title = "aaa", Color = OxyColors.DarkMagenta };
+                    var lineSeries = new LineSeries() { Title = "Max(F) per price variation", Color = OxyColors.DarkMagenta };
                     lineSeries.Points.AddRange(m_pricePointAnalysis.Select(p => new DataPoint(p.Point, p.Result.Value)));
                 
                     plotModel.Series.Add(lineSeries);
