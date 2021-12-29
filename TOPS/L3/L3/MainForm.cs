@@ -23,6 +23,12 @@ namespace L3
                 var taskSolver = task.Build();
 
                 m_startOptimal = taskSolver.Solve();
+                
+                m_optimalTotalPrice = 0;
+                for (var i = 0; i < m_startOptimal.X.Length; i++)
+                {
+                    m_optimalTotalPrice += m_startOptimal.X[i] * task.Prices[i];
+                }
             }
 
             // Price analysis
@@ -78,6 +84,8 @@ namespace L3
                     m_listView.Items.Add(new ListViewItem(new string[] { $"X[{i}]", $"{m_startOptimal.X[i]:F0}" }));
                 }
                 m_listView.Items.Add(new ListViewItem(new string[] { $"Max(F)", $"{m_startOptimal.Value:F0}" }));
+                m_listView.Items.Add(new ListViewItem(new string[] { $"Tota money", $"{m_optimalTotalPrice:F0}" }));
+                m_listView.Items.Add(new ListViewItem(new string[] { string.Empty, string.Empty }));
 
                 ZoneResult priceZone = default(ZoneResult);
                 bool rangeFound = false;
@@ -102,6 +110,20 @@ namespace L3
                 {
                     m_listView.Items.Add(new ListViewItem(new string[] { $"Price. From", $"{priceZone.FromPoint:F0}"}));
                     m_listView.Items.Add(new ListViewItem(new string[] { $"Price. To", $"{priceZone.ToPoint:F0}" }));
+                    m_listView.Items.Add(new ListViewItem(new string[] { string.Empty, string.Empty }));
+                }
+
+                for (var i = 0; i < m_priceZoneAnalysis.Count; i++)
+                {
+                    var z = m_priceZoneAnalysis[i];
+
+                    m_listView.Items.Add(new ListViewItem(new string[] { $"Range#{i+1}", $"[{z.FromPoint:F0} .. {z.ToPoint:F0}]" }));
+                    m_listView.Items.Add(new ListViewItem(new string[] { $"Range F", $"{z.Result.Value:F0}" }));
+                    m_listView.Items.Add(new ListViewItem(new string[] { $"Range X", $"{string.Join(", ", z.Result.X)}" }));
+
+                    Debug.WriteLine($"Range#{i + 1}: [{z.FromPoint:F0} .. {z.ToPoint:F0}]");
+                    Debug.WriteLine($"Range F: {z.Result.Value:F0}");
+                    Debug.WriteLine($"Range X: {string.Join(", ", z.Result.X)}");
                 }
 
                 m_dataColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -190,6 +212,7 @@ namespace L3
         #region Variables
 
         LPSolver.Result m_startOptimal = LPSolver.Result.Empty;
+        double m_optimalTotalPrice = 0;
 
         double m_startPrice = 0;
         IList<PointResult> m_pricePointAnalysis = new List<PointResult>();
