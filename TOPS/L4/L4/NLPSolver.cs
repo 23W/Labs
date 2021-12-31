@@ -40,7 +40,7 @@ namespace L4
         NonlinearProgrammingProblem NLPProblem { get; init; }
         DoubleVector X0 { get; init; }
 
-        public NLPSolver(Func<double[], double> func, double[] x0)
+        public NLPSolver(IFunction func, double[] x0)
         {
             if (x0?.Length == 0)
             {
@@ -48,7 +48,7 @@ namespace L4
             }
 
             X0 = new DoubleVector(x0);
-            NLPProblem = new NonlinearProgrammingProblem(X0.Length, new Func<DoubleVector, double>(x => func(x.ToArray())));
+            NLPProblem = new NonlinearProgrammingProblem(X0.Length, new Func<DoubleVector, double>(x => func.CalcValue(x.ToArray())));
         }
 
         public void AddBound(BoundType type, int xIndex, double bound)
@@ -71,7 +71,7 @@ namespace L4
             }
         }
 
-        public void AddConstraint(ConstrainType type, Func<double[], double> constraint, double rightHandValue = 0)
+        public void AddConstraint(ConstrainType type, IFunction constraint, double rightHandValue = 0)
         {
             if (constraint == null)
             {
@@ -81,13 +81,13 @@ namespace L4
             switch (type)
             {
                 case ConstrainType.Upper:
-                    NLPProblem.AddUpperBoundConstraint(X0.Length, new Func<DoubleVector, double>(x => constraint(x.ToArray())), rightHandValue);
+                    NLPProblem.AddUpperBoundConstraint(X0.Length, new Func<DoubleVector, double>(x => constraint.CalcValue(x.ToArray())), rightHandValue);
                     break;
                 case ConstrainType.Lower:
-                    NLPProblem.AddLowerBoundConstraint(X0.Length, new Func<DoubleVector, double>(x => constraint(x.ToArray())), rightHandValue);
+                    NLPProblem.AddLowerBoundConstraint(X0.Length, new Func<DoubleVector, double>(x => constraint.CalcValue(x.ToArray())), rightHandValue);
                     break;
                 case ConstrainType.Equal:
-                    NLPProblem.AddEqualityConstraint(X0.Length, new Func<DoubleVector, double>(x => constraint(x.ToArray())), rightHandValue);
+                    NLPProblem.AddEqualityConstraint(X0.Length, new Func<DoubleVector, double>(x => constraint.CalcValue(x.ToArray())), rightHandValue);
                     break;
                 default:
                     throw new InvalidArgumentException(nameof(type));
