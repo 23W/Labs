@@ -94,7 +94,7 @@ namespace L4
             }
         }
 
-        public Result Solve(Method method = Method.StochasticHillClimbing)
+        public Result Solve(bool minimaze = true, Method method = Method.StochasticHillClimbing)
         {
             var res = Result.Empty;
 
@@ -103,7 +103,14 @@ namespace L4
                 case Method.StochasticHillClimbing:
                     {
                         var solver = new StochasticHillClimbingSolver();
-                        solver.Solve(NLPProblem, X0);
+                        var solverParams = new StochasticHillClimbingParameters()
+                        {
+                            TimeLimitMilliSeconds = 10000,
+                            Presolve = true,
+                            Minimize = minimaze,
+                        };
+
+                        solver.Solve(NLPProblem, X0, solverParams);
 
                         res.Succeeded = solver.Result == ConstrainedOptimizer.SolveResult.Optimal;
                         if (res.Succeeded)
@@ -116,7 +123,13 @@ namespace L4
 
                 case Method.SQP:
                     {
+                        if (!minimaze)
+                        {
+                            throw new ArgumentException("SQP method can't maximaze objective function", nameof(minimaze));
+                        }
+
                         var solver = new ActiveSetLineSearchSQP();
+
                         res.Succeeded = solver.Solve(NLPProblem, X0);
                         if (res.Succeeded)
                         {
