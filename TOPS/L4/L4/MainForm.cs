@@ -6,5 +6,21 @@ namespace L4
         {
             InitializeComponent();
         }
+
+        void Run()
+        {
+
+        }
+
+        void UpdateControls()
+        {
+
+        }
+
+        private void OnRun(object sender, EventArgs e)
+        {
+            Run();
+            UpdateControls();
+        }
     }
 }
