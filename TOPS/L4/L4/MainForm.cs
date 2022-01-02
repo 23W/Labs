@@ -15,7 +15,9 @@ namespace L4
             InitializeComponent();
         }
 
-        void Run()
+        #region Methods
+
+        void Run(bool generateNewGuesses)
         {
             var rnd = new Random();
 
@@ -23,14 +25,27 @@ namespace L4
             double x0 = fn.LowerBound[0], x1 = fn.UpperBound[0];
             double y0 = fn.LowerBound[1], y1 = fn.UpperBound[1];
 
-            m_experiments.Clear();
+            if (generateNewGuesses)
+            {
+                m_experiments.Clear();
+            }
+
             for (var expNumber = 0; expNumber < c_experimentsCount; expNumber++)
             {
-                var initialGuess = new double[] 
+                var initialGuess = default(double[]);
+
+                if (generateNewGuesses)
                 {
-                    x0 + (x1 - x0) * rnd.NextDouble(),
-                    y0 + (y1 - y0) * rnd.NextDouble() 
-                };
+                    initialGuess = new double[]
+                    {
+                        x0 + (x1 - x0) * rnd.NextDouble(),
+                        y0 + (y1 - y0) * rnd.NextDouble()
+                    };
+                }
+                else
+                {
+                    initialGuess = m_experiments[expNumber].X0;
+                }
 
                 var solver = new NLPSolver(fn, initialGuess);
                 solver.AddBound(NLPSolver.BoundType.Lower, 0, x0);
@@ -55,7 +70,15 @@ namespace L4
                     unscaledResult.Value /= fn.ScaleFactor;
 
                     expCase.Result = unscaledResult;
-                    m_experiments.Add(expCase);
+
+                    if (generateNewGuesses)
+                    {
+                        m_experiments.Add(expCase);
+                    }
+                    else
+                    {
+                        m_experiments[expNumber] = expCase;
+                    }
                 }
             }
         }
@@ -253,13 +276,29 @@ namespace L4
             }
         }
 
+        #endregion
+
+        #region Event Handlers
+
         private void OnRun(object sender, EventArgs e)
         {
-            Run();
+            Run(true);
             UpdateControls();
         }
 
+        private void OnMethodChanged(object sender, EventArgs e)
+        {
+            Run(false);
+            UpdateControls();
+        }
+        
+        #endregion
+
+        #region Variables
+
         const int c_experimentsCount = 10;
         IList<ExperimentCase> m_experiments = new List<ExperimentCase>();
+
+        #endregion
     }
 }
