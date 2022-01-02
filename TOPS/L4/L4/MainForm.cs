@@ -2,6 +2,7 @@ using OxyPlot;
 using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Series;
+using System.Diagnostics;
 
 namespace L4
 {
@@ -96,6 +97,11 @@ namespace L4
                                                             $"[{string.Join(", ", experiment.X0.Select(x => $"{x:G3}"))}]",
                                                             $"[{string.Join(", ", experiment.Result.X.Select(x => $"{x:G3}"))}]",
                                                             $"{experiment.Result.Value:F2}" }));
+
+                    Debug.Write($"X0: [{string.Join(", ", experiment.X0.Select(x => $"{x:G3}"))}]; ");
+                    Debug.Write($"X: [{string.Join(", ", experiment.Result.X.Select(x => $"{x:G3}"))}]; ");
+                    Debug.Write($"F: {experiment.Result.Value:F2}");
+                    Debug.WriteLine(string.Empty);
                 }
 
                 m_x0ColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -271,7 +277,7 @@ namespace L4
                         plotModel.Annotations.Add(endPoint);
                     }
                 }
-
+                
                 m_plotView.Model = plotModel;
             }
         }

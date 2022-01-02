@@ -43,7 +43,7 @@
             // m_runButton
             // 
             this.m_runButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_runButton.Location = new System.Drawing.Point(841, 627);
+            this.m_runButton.Location = new System.Drawing.Point(1272, 927);
             this.m_runButton.Name = "m_runButton";
             this.m_runButton.Size = new System.Drawing.Size(94, 29);
             this.m_runButton.TabIndex = 0;
@@ -61,7 +61,7 @@
             this.m_resultValueColumnHeader});
             this.m_listView.Location = new System.Drawing.Point(12, 12);
             this.m_listView.Name = "m_listView";
-            this.m_listView.Size = new System.Drawing.Size(241, 644);
+            this.m_listView.Size = new System.Drawing.Size(241, 944);
             this.m_listView.TabIndex = 1;
             this.m_listView.UseCompatibleStateImageBehavior = false;
             this.m_listView.View = System.Windows.Forms.View.Details;
@@ -87,7 +87,7 @@
             this.m_plotView.Location = new System.Drawing.Point(259, 12);
             this.m_plotView.Name = "m_plotView";
             this.m_plotView.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.m_plotView.Size = new System.Drawing.Size(676, 609);
+            this.m_plotView.Size = new System.Drawing.Size(1107, 909);
             this.m_plotView.TabIndex = 2;
             this.m_plotView.Text = "PlotView";
             this.m_plotView.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -125,7 +125,7 @@
             this.m_methodPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.m_methodPanel.Controls.Add(this.m_stochasticHillClimbingButton);
             this.m_methodPanel.Controls.Add(this.m_sqpMethodButton);
-            this.m_methodPanel.Location = new System.Drawing.Point(568, 627);
+            this.m_methodPanel.Location = new System.Drawing.Point(999, 927);
             this.m_methodPanel.Name = "m_methodPanel";
             this.m_methodPanel.Size = new System.Drawing.Size(267, 29);
             this.m_methodPanel.TabIndex = 4;
@@ -134,7 +134,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(947, 668);
+            this.ClientSize = new System.Drawing.Size(1378, 968);
             this.Controls.Add(this.m_methodPanel);
             this.Controls.Add(this.m_plotView);
             this.Controls.Add(this.m_listView);
