@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="MainForm.cs~RF538cf1e2.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CenterSpace.NMath.Standard.Windows.X64" Version="7.3.0.5" />
     <PackageReference Include="OxyPlot.WindowsForms" Version="2.1.0" />
   </ItemGroup>
