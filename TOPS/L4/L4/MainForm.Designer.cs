@@ -37,15 +37,18 @@
             this.m_stochasticHillClimbingButton = new System.Windows.Forms.RadioButton();
             this.m_sqpMethodButton = new System.Windows.Forms.RadioButton();
             this.m_methodPanel = new System.Windows.Forms.Panel();
+            this.m_nLabel = new System.Windows.Forms.Label();
+            this.m_nTextBox = new System.Windows.Forms.TextBox();
+            this.m_updateButton = new System.Windows.Forms.Button();
             this.m_methodPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // m_runButton
             // 
             this.m_runButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_runButton.Location = new System.Drawing.Point(1272, 927);
+            this.m_runButton.Location = new System.Drawing.Point(1246, 927);
             this.m_runButton.Name = "m_runButton";
-            this.m_runButton.Size = new System.Drawing.Size(94, 29);
+            this.m_runButton.Size = new System.Drawing.Size(120, 29);
             this.m_runButton.TabIndex = 0;
             this.m_runButton.Text = "Run";
             this.m_runButton.UseVisualStyleBackColor = true;
@@ -105,7 +108,6 @@
             this.m_stochasticHillClimbingButton.TabStop = true;
             this.m_stochasticHillClimbingButton.Text = "Stochastic Hill Climbing";
             this.m_stochasticHillClimbingButton.UseVisualStyleBackColor = true;
-            this.m_stochasticHillClimbingButton.CheckedChanged += new System.EventHandler(this.OnMethodChanged);
             // 
             // m_sqpMethodButton
             // 
@@ -116,25 +118,58 @@
             this.m_sqpMethodButton.TabIndex = 3;
             this.m_sqpMethodButton.Text = "SQP";
             this.m_sqpMethodButton.UseVisualStyleBackColor = true;
-            this.m_sqpMethodButton.CheckedChanged += new System.EventHandler(this.OnMethodChanged);
             // 
             // m_methodPanel
             // 
-            this.m_methodPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.m_methodPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.m_methodPanel.AutoSize = true;
             this.m_methodPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.m_methodPanel.Controls.Add(this.m_stochasticHillClimbingButton);
             this.m_methodPanel.Controls.Add(this.m_sqpMethodButton);
-            this.m_methodPanel.Location = new System.Drawing.Point(999, 927);
+            this.m_methodPanel.Location = new System.Drawing.Point(419, 930);
             this.m_methodPanel.Name = "m_methodPanel";
             this.m_methodPanel.Size = new System.Drawing.Size(267, 29);
             this.m_methodPanel.TabIndex = 4;
+            // 
+            // m_nLabel
+            // 
+            this.m_nLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.m_nLabel.AutoSize = true;
+            this.m_nLabel.Location = new System.Drawing.Point(259, 933);
+            this.m_nLabel.Name = "m_nLabel";
+            this.m_nLabel.Size = new System.Drawing.Size(23, 20);
+            this.m_nLabel.TabIndex = 5;
+            this.m_nLabel.Text = "N:";
+            // 
+            // m_nTextBox
+            // 
+            this.m_nTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.m_nTextBox.Location = new System.Drawing.Point(288, 930);
+            this.m_nTextBox.Name = "m_nTextBox";
+            this.m_nTextBox.Size = new System.Drawing.Size(125, 27);
+            this.m_nTextBox.TabIndex = 6;
+            this.m_nTextBox.Text = "10";
+            this.m_nTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.OnNValidating);
+            // 
+            // m_updateButton
+            // 
+            this.m_updateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.m_updateButton.Location = new System.Drawing.Point(699, 929);
+            this.m_updateButton.Name = "m_updateButton";
+            this.m_updateButton.Size = new System.Drawing.Size(94, 29);
+            this.m_updateButton.TabIndex = 7;
+            this.m_updateButton.Text = "Update";
+            this.m_updateButton.UseVisualStyleBackColor = true;
+            this.m_updateButton.Click += new System.EventHandler(this.OnUpdate);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1378, 968);
+            this.Controls.Add(this.m_updateButton);
+            this.Controls.Add(this.m_nTextBox);
+            this.Controls.Add(this.m_nLabel);
             this.Controls.Add(this.m_methodPanel);
             this.Controls.Add(this.m_plotView);
             this.Controls.Add(this.m_listView);
@@ -160,5 +195,8 @@
         private RadioButton m_stochasticHillClimbingButton;
         private RadioButton m_sqpMethodButton;
         private Panel m_methodPanel;
+        private Label m_nLabel;
+        private TextBox m_nTextBox;
+        private Button m_updateButton;
     }
 }
