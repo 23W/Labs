@@ -8,8 +8,10 @@ namespace L4
 {
     public partial class MainForm : Form
     {
-        NLPSolver.Method CurrentMethod => m_stochasticHillClimbingButton.Checked ? NLPSolver.Method.StochasticHillClimbing : 
+        NLPSolver.Method CurrentMethod => m_stochasticHillClimbingButton.Checked ? NLPSolver.Method.StochasticHillClimbing :
                                          (m_sqpMethodButton.Checked ? NLPSolver.Method.SQP : NLPSolver.Method.StochasticHillClimbing);
+
+        int ExperimentsCount { get { int count = 0; int.TryParse(m_nTextBox.Text, out count); return Math.Max(10, count); } }
 
         public MainForm()
         {
@@ -30,12 +32,19 @@ namespace L4
             {
                 m_experiments.Clear();
             }
+            else
+            {
+                while (ExperimentsCount < m_experiments.Count)
+                {
+                    m_experiments.RemoveAt(m_experiments.Count - 1);
+                }
+            }
 
-            for (var expNumber = 0; expNumber < c_experimentsCount; expNumber++)
+            for (var expNumber = 0; expNumber < ExperimentsCount; expNumber++)
             {
                 var initialGuess = default(double[]);
 
-                if (generateNewGuesses)
+                if (expNumber >= m_experiments.Count)
                 {
                     initialGuess = new double[]
                     {
@@ -72,7 +81,7 @@ namespace L4
 
                     expCase.Result = unscaledResult;
 
-                    if (generateNewGuesses)
+                    if (expNumber >= m_experiments.Count)
                     {
                         m_experiments.Add(expCase);
                     }
@@ -292,17 +301,28 @@ namespace L4
             UpdateControls();
         }
 
-        private void OnMethodChanged(object sender, EventArgs e)
+        private void OnUpdate(object sender, EventArgs e)
         {
             Run(false);
             UpdateControls();
         }
-        
+
+        private void OnNValidating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            int count = 0;
+            bool valid = int.TryParse(m_nTextBox.Text, out count) && count >= 10;
+
+            e.Cancel = !valid;
+            if (!valid)
+            {
+                MessageBox.Show(this, "Experinents count must be greater than or equal to 10!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            }
+        }
+
         #endregion
 
         #region Variables
 
-        const int c_experimentsCount = 10;
         IList<ExperimentCase> m_experiments = new List<ExperimentCase>();
 
         #endregion
