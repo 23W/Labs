@@ -43,7 +43,6 @@ active proctype Manager1()
 
 active proctype Manager2()
 {
-    chan rndV = [0] of {int, int};
     int x = 0;
     int y = 0;
     int answer = 0;
@@ -55,7 +54,8 @@ active proctype Manager2()
                      state = 1;
     :: (state==1) -> data ! mng2, x, y;
                      result ? mng2, answer;
-                     assert(answer <=x && answer <=y && x % answer == 0 && y % answer == 0);
+                     assert(answer <=x && answer <=y &&
+                            x % answer == 0 && y % answer == 0);
                      state = 0;
     od
 }
