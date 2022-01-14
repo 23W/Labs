@@ -17,7 +17,9 @@ namespace IDZ
 {
     public partial class MainForm : Form
     {
-        PolyExperiment Experiment = new PolyExperiment();
+        PolyExperiment PolyExperiment = new PolyExperiment();
+        LPManufactureExpariment ManufactureExpariment = new LPManufactureExpariment();
+        LPTransportExperiment TransportExperiment = new LPTransportExperiment();
 
         public MainForm()
         {
@@ -26,21 +28,23 @@ namespace IDZ
 
         void Run()
         {
-            Experiment.Run();
+            PolyExperiment.Run();
+            ManufactureExpariment.Run();
+            TransportExperiment.Run();
         }
 
         void UpdateControls()
         {
             // table list view
-            if (Experiment.TableFunction != default)
+            if (PolyExperiment.TableFunction != default)
             {
                 m_tableListView.BeginUpdate();
                 m_tableListView.Items.Clear();
 
-                for (var p = 0; p < Experiment.TableRank; p++)
+                for (var p = 0; p < PolyExperiment.TableRank; p++)
                 {
-                    m_tableListView.Items.Add(new ListViewItem(new string[] { $"{Experiment.TableFunction.X[p]:F2}",
-                                                                              $"{Experiment.TableFunction.Y[p]:F2}"}));
+                    m_tableListView.Items.Add(new ListViewItem(new string[] { $"{PolyExperiment.TableFunction.X[p]:F2}",
+                                                                              $"{PolyExperiment.TableFunction.Y[p]:F2}"}));
                 }
 
                 m_tableXColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
@@ -52,19 +56,19 @@ namespace IDZ
             }
 
             // polinomial list view
-            if (Experiment.G != default)
+            if (PolyExperiment.G != default)
             {
                 m_polyListView.BeginUpdate();
                 m_polyListView.Items.Clear();
 
-                for (var p = 0; p < Experiment.G.Rank; p++)
+                for (var p = 0; p < PolyExperiment.G.Rank; p++)
                 {
                     m_polyListView.Items.Add(new ListViewItem(new string[] { $"A{p}",
-                                                                             $"{Experiment.G.A[p]:F3}"}));
+                                                                             $"{PolyExperiment.G.A[p]:F3}"}));
                 }
 
                 m_polyListView.Items.Add(new ListViewItem(new string[] { $"σ",
-                                                                         $"{Experiment.StdDev:F3}"}));
+                                                                         $"{PolyExperiment.StdDev:F3}"}));
                 
                 m_polyDataColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
                 m_polyDataColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
@@ -80,11 +84,11 @@ namespace IDZ
                 m_optimizationListView.Items.Clear();
 
                 m_optimizationListView.Items.Add(new ListViewItem(new string[] { $"OptX",
-                                                                                 $"{Experiment.Optimum.OptX:F2}"}));
+                                                                                 $"{PolyExperiment.Optimum.OptX:F2}"}));
                 m_optimizationListView.Items.Add(new ListViewItem(new string[] { $"OptF",
-                                                                                 $"{Experiment.Optimum.OptF:F2}"}));
+                                                                                 $"{PolyExperiment.Optimum.OptF:F2}"}));
                 m_optimizationListView.Items.Add(new ListViewItem(new string[] { $"ε",
-                                                                                 $"{Experiment.OptimumQuality:G}"}));
+                                                                                 $"{PolyExperiment.OptimumQuality:G}"}));
 
                 m_optimizationDataColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
                 m_optimizationDataColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
@@ -104,13 +108,13 @@ namespace IDZ
 
                 // axes
                 {
-                    var margin = (Experiment.X1 - Experiment.X0) * 0.01;
+                    var margin = (PolyExperiment.X1 - PolyExperiment.X0) * 0.01;
 
                     var xAxis = new LinearAxis()
                     {
                         Title = "X",
-                        Minimum = Experiment.X0 - margin,
-                        Maximum = Experiment.X1 + margin,
+                        Minimum = PolyExperiment.X0 - margin,
+                        Maximum = PolyExperiment.X1 + margin,
                         Position = AxisPosition.Bottom,
                         IsPanEnabled = false,
                         IsZoomEnabled = false,
@@ -146,17 +150,17 @@ namespace IDZ
                 {
                     // function
                     const int fnSteps = 500;
-                    double dx = (Experiment.X1 - Experiment.X0) / fnSteps;
+                    double dx = (PolyExperiment.X1 - PolyExperiment.X0) / fnSteps;
 
-                    var fns = new FunctionSeries(x => Experiment.F.CalcValue(x), Experiment.X0, Experiment.X1, dx, "f(x)");
+                    var fns = new FunctionSeries(x => PolyExperiment.F.CalcValue(x), PolyExperiment.X0, PolyExperiment.X1, dx, "f(x)");
                     plotModel.Series.Add(fns);
 
                     // polynom
-                    if (Experiment.G != default)
+                    if (PolyExperiment.G != default)
                     {
-                        var polyFn = Experiment.G;
+                        var polyFn = PolyExperiment.G;
 
-                        var pfns = new FunctionSeries(x => polyFn.CalcValue(x), Experiment.X0, Experiment.X1, dx, "g(x)")
+                        var pfns = new FunctionSeries(x => polyFn.CalcValue(x), PolyExperiment.X0, PolyExperiment.X1, dx, "g(x)")
                         {
                             Color = OxyColor.FromAColor(150, OxyColors.Purple),
                             LineStyle = LineStyle.Dash,
@@ -167,14 +171,14 @@ namespace IDZ
                 }
 
                 // points
-                if (Experiment.TableFunction != default)
+                if (PolyExperiment.TableFunction != default)
                 {
-                    for (var p = 0; p < Experiment.TableRank; p++)
+                    for (var p = 0; p < PolyExperiment.TableRank; p++)
                     {
                         var point = new PointAnnotation()
                         {
-                            X = Experiment.TableFunction.X[p],
-                            Y = Experiment.TableFunction.Y[p],
+                            X = PolyExperiment.TableFunction.X[p],
+                            Y = PolyExperiment.TableFunction.Y[p],
                             Shape = MarkerType.Circle,
                             StrokeThickness = 1,
                             Stroke = OxyColors.Black,
@@ -186,19 +190,19 @@ namespace IDZ
                 }
 
                 // minimum
-                if (Experiment.Optimum.Succeded)
+                if (PolyExperiment.Optimum.Succeded)
                 {
                     var line = new LineAnnotation()
                     {
                         Type = LineAnnotationType.Vertical,
-                        X = Experiment.Optimum.OptX,
+                        X = PolyExperiment.Optimum.OptX,
                         Layer = AnnotationLayer.BelowSeries,
                     };
 
                     var point = new PointAnnotation()
                     {
-                        X = Experiment.Optimum.OptX,
-                        Y = Experiment.Optimum.OptF,
+                        X = PolyExperiment.Optimum.OptX,
+                        Y = PolyExperiment.Optimum.OptF,
                         Shape = MarkerType.Triangle,
                         StrokeThickness = 1,
                         Stroke = OxyColors.Black,
