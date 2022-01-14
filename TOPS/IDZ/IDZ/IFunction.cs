@@ -22,4 +22,17 @@ namespace IDZ
         double[] X { get; }
         double[] Y { get; }
     }
+
+    internal struct OptimizationResult
+    {
+        internal bool Succeded;
+        internal double OptX;
+        internal double OptF;
+    }
+
+    internal interface IFunctionOptimizer
+    {
+        OptimizationResult CalcMinimum();
+        OptimizationResult CalcMaximum();
+    }
 }

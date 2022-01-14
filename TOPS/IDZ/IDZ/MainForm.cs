@@ -122,6 +122,30 @@ namespace IDZ
                     }
                 }
 
+                // minimum
+                if (Experiment.Optimum.Succeded)
+                {
+                    var line = new LineAnnotation()
+                    {
+                        Type = LineAnnotationType.Vertical,
+                        X = Experiment.Optimum.OptX,
+                        Layer = AnnotationLayer.BelowSeries,
+                    };
+
+                    var point = new PointAnnotation()
+                    {
+                        X = Experiment.Optimum.OptX,
+                        Y = Experiment.Optimum.OptF,
+                        Shape = MarkerType.Triangle,
+                        StrokeThickness = 1,
+                        Stroke = OxyColors.Black,
+                        Fill = OxyColors.White,
+                    };
+
+                    plotModel.Annotations.Add(line);
+                    plotModel.Annotations.Add(point);
+                }
+
                 m_plotView.Model = plotModel;
             }
         }
