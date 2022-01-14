@@ -8,10 +8,13 @@ namespace IDZ
 {
     internal interface IFunction
     {
+        double CalcValue(double x);
+    }
+
+    internal interface IBoundedFunction : IFunction
+    {
         double UpperBound { get; }
         double LowerBound { get; }
-
-        double CalcValue(double x);
-
     }
+
 }

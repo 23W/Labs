@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IDZ
 {
-    internal class Function : IFunction
+    internal class Function : IBoundedFunction
     {
         double A0 => 1;
         double A1 => 3;

@@ -1,4 +1,5 @@
 ﻿using OxyPlot;
+using OxyPlot.Annotations;
 using OxyPlot.Axes;
 using OxyPlot.Legends;
 using OxyPlot.Series;
@@ -16,6 +17,8 @@ namespace IDZ
 {
     public partial class MainForm : Form
     {
+        PolyExperiment Experiment = new PolyExperiment();
+
         public MainForm()
         {
             InitializeComponent();
@@ -23,17 +26,13 @@ namespace IDZ
 
         void Run()
         {
-
+            Experiment.Run();
         }
 
         void UpdateControls()
         {
             // plot view
             {
-                var fn = new Function();
-                double x0 = fn.LowerBound;
-                double x1 = fn.UpperBound;
-
                 var plotModel = new PlotModel()
                 {
                     Background = OxyColors.White,
@@ -42,11 +41,13 @@ namespace IDZ
 
                 // axes
                 {
+                    var margin = (Experiment.X1 - Experiment.X0) * 0.01;
+
                     var xAxis = new LinearAxis()
                     {
                         Title = "X",
-                        Minimum = x0,
-                        Maximum = x1,
+                        Minimum = Experiment.X0 - margin,
+                        Maximum = Experiment.X1 + margin,
                         Position = AxisPosition.Bottom,
                         IsPanEnabled = false,
                         IsZoomEnabled = false,
@@ -80,10 +81,45 @@ namespace IDZ
 
                 // functions
                 {
-                    const int fnSteps = 1000;
+                    // function
+                    const int fnSteps = 500;
+                    double dx = (Experiment.X1 - Experiment.X0) / fnSteps;
 
-                    var fns = new FunctionSeries(x => fn.CalcValue(x), x0, x1, (x1 - x0) / fnSteps, "f(x)");
+                    var fns = new FunctionSeries(x => Experiment.F.CalcValue(x), Experiment.X0, Experiment.X1, dx, "f(x)");
                     plotModel.Series.Add(fns);
+
+                    // polynom
+                    if (Experiment.G != default)
+                    {
+                        var polyFn = Experiment.G;
+
+                        var pfns = new FunctionSeries(x => polyFn.CalcValue(x), Experiment.X0, Experiment.X1, dx, "g(x)")
+                        {
+                            Color = OxyColor.FromAColor(150, OxyColors.Purple),
+                            LineStyle = LineStyle.Dash,
+
+                        };
+                        plotModel.Series.Add(pfns);
+                    }
+                }
+
+                // points
+                if (Experiment.TableFunction != default)
+                {
+                    for (var p = 0; p < Experiment.TableRank; p++)
+                    {
+                        var point = new PointAnnotation()
+                        {
+                            X = Experiment.TableFunction.X[p],
+                            Y = Experiment.TableFunction.Y[p],
+                            Shape = MarkerType.Circle,
+                            StrokeThickness = 1,
+                            Stroke = OxyColors.Black,
+                            Fill = OxyColors.LightGray,
+                        };
+
+                        plotModel.Annotations.Add(point);
+                    }
                 }
 
                 m_plotView.Model = plotModel;
