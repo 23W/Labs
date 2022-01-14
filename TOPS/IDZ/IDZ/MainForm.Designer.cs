@@ -46,10 +46,10 @@
             // 
             // m_runButton
             // 
-            this.m_runButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.m_runButton.Location = new System.Drawing.Point(1048, 745);
+            this.m_runButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.m_runButton.Location = new System.Drawing.Point(12, 651);
             this.m_runButton.Name = "m_runButton";
-            this.m_runButton.Size = new System.Drawing.Size(94, 29);
+            this.m_runButton.Size = new System.Drawing.Size(151, 29);
             this.m_runButton.TabIndex = 0;
             this.m_runButton.Text = "Run";
             this.m_runButton.UseVisualStyleBackColor = true;
@@ -64,7 +64,7 @@
             this.m_plotView.Location = new System.Drawing.Point(169, 12);
             this.m_plotView.Name = "m_plotView";
             this.m_plotView.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.m_plotView.Size = new System.Drawing.Size(973, 727);
+            this.m_plotView.Size = new System.Drawing.Size(973, 668);
             this.m_plotView.TabIndex = 1;
             this.m_plotView.Text = "plotView";
             this.m_plotView.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
@@ -172,7 +172,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1154, 786);
+            this.ClientSize = new System.Drawing.Size(1154, 692);
             this.Controls.Add(this.m_optimizationListView);
             this.Controls.Add(this.m_polyListView);
             this.Controls.Add(this.m_optimizaLabel);
