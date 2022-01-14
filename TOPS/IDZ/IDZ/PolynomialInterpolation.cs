@@ -15,6 +15,11 @@ namespace IDZ
         internal int Range => X.Length;
         internal double[] A => CalcA();
 
+        internal PolynomialInterpolation(ITableFunction tf)
+            : this(tf.X, tf.Y)
+        {
+        }
+
         internal PolynomialInterpolation(double[] x, double[] y)
         {
             if (x.Length != y.Length || 

@@ -17,4 +17,9 @@ namespace IDZ
         double LowerBound { get; }
     }
 
+    internal interface ITableFunction
+    {
+        double[] X { get; }
+        double[] Y { get; }
+    }
 }

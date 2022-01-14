@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace IDZ
 {
-    internal class TableFunction
+    internal class TableFunction : ITableFunction
     {
-        internal double[] X { get; private set; } = Array.Empty<double>();
-        internal double[] Y { get; private set; } = Array.Empty<double>();
+        public double[] X { get; private set; } = Array.Empty<double>();
+        public double[] Y { get; private set; } = Array.Empty<double>();
 
         internal TableFunction(IFunction fn, double x0, double x1, double dx)
         {

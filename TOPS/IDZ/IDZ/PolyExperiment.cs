@@ -12,13 +12,13 @@ namespace IDZ
         internal double X0 => F.LowerBound;
         internal double X1 => F.UpperBound;
         internal int TableRank { get; set; } = 4;
-        internal TableFunction? TableFunction { get; private set; } = default(TableFunction);
+        internal ITableFunction? TableFunction { get; private set; } = default(ITableFunction);
         internal IFunction? G { get; private set; } = default(IFunction);
 
         internal void Run()
         {
             TableFunction = new TableFunction(F, X0, X1, TableRank);
-            G = new PolynomialInterpolation(TableFunction.X, TableFunction.Y);
+            G = new PolynomialInterpolation(TableFunction);
         }
     }
 }
