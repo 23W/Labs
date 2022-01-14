@@ -17,6 +17,12 @@ namespace IDZ
         double LowerBound { get; }
     }
 
+    internal interface IPolynomialFunction : IFunction
+    {
+        int Rank { get; }
+        double[] A { get; }
+    }
+
     internal interface ITableFunction
     {
         double[] X { get; }

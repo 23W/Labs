@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace IDZ
 {
-    internal class PolynomialInterpolation : IFunction
+    internal class PolynomialInterpolation : IPolynomialFunction
     {
         internal double[] X { get; init; }
         internal double[] Y { get; init; }
-        internal int Range => X.Length;
-        internal double[] A => CalcA();
+        public int Rank => X.Length;
+        public double[] A => CalcA();
 
         internal PolynomialInterpolation(ITableFunction tf)
             : this(tf.X, tf.Y)
@@ -37,7 +37,7 @@ namespace IDZ
             var a = A;
             var y = 0.0;
 
-            for (var r = 0; r < Range; r++)
+            for (var r = 0; r < Rank; r++)
             {
                 y += a[r] * Math.Pow(x, r);
             }
@@ -49,17 +49,17 @@ namespace IDZ
         {
             if (!m_a?.Any() ?? true)
             {
-                var t = new DoubleMatrix(Range, Range);
-                for (var r = 0; r < Range; r++)
+                var t = new DoubleMatrix(Rank, Rank);
+                for (var r = 0; r < Rank; r++)
                 {
-                    for (var c = 0; c < Range; c++)
+                    for (var c = 0; c < Rank; c++)
                     {
                         t[r, c] = Math.Pow(X[r], c);
                     }
                 }
 
-                var y = new DoubleMatrix(Range, 1);
-                for (var r = 0; r < Range; r++)
+                var y = new DoubleMatrix(Rank, 1);
+                for (var r = 0; r < Rank; r++)
                 {
                     y[r, 0] = Y[r];
                 }

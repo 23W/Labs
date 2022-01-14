@@ -13,10 +13,11 @@ namespace IDZ
         internal double X1 => F.UpperBound;
         internal int TableRank { get; set; } = 4;
         internal ITableFunction? TableFunction { get; private set; } = default(ITableFunction);
-        internal IFunction? G { get; private set; } = default(IFunction);
+        internal IPolynomialFunction? G { get; private set; } = default(IPolynomialFunction);
         internal double StdDev { get; private set; }
         internal int StdDevQuality => 1000;
         internal OptimizationResult Optimum { get; private set; } = default(OptimizationResult);
+        internal double OptimumQuality => 1e-8;
 
         internal void Run()
         {
@@ -34,7 +35,7 @@ namespace IDZ
             StdDev = Math.Sqrt(cumulativeError / StdDevQuality);
 
             // maximum value
-            var minimizer = new GoldenRatioMinimizer() { F = F, X0 = X0, X1 = X1, Tolerance = 1e-8 };
+            var minimizer = new GoldenRatioMinimizer() { F = F, X0 = X0, X1 = X1, Tolerance = OptimumQuality };
             Optimum = minimizer.CalcMaximum();
         }
     }

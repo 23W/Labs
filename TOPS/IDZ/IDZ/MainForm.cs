@@ -31,6 +31,69 @@ namespace IDZ
 
         void UpdateControls()
         {
+            // table list view
+            if (Experiment.TableFunction != default)
+            {
+                m_tableListView.BeginUpdate();
+                m_tableListView.Items.Clear();
+
+                for (var p = 0; p < Experiment.TableRank; p++)
+                {
+                    m_tableListView.Items.Add(new ListViewItem(new string[] { $"{Experiment.TableFunction.X[p]:F2}",
+                                                                              $"{Experiment.TableFunction.Y[p]:F2}"}));
+                }
+
+                m_tableXColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                m_tableXColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+                m_tableYColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                m_tableYColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+                m_tableListView.EndUpdate();
+            }
+
+            // polinomial list view
+            if (Experiment.G != default)
+            {
+                m_polyListView.BeginUpdate();
+                m_polyListView.Items.Clear();
+
+                for (var p = 0; p < Experiment.G.Rank; p++)
+                {
+                    m_polyListView.Items.Add(new ListViewItem(new string[] { $"A{p}",
+                                                                             $"{Experiment.G.A[p]:F3}"}));
+                }
+
+                m_polyListView.Items.Add(new ListViewItem(new string[] { $"σ",
+                                                                         $"{Experiment.StdDev:F3}"}));
+                
+                m_polyDataColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                m_polyDataColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+                m_polyValueColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                m_polyValueColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+                m_polyListView.EndUpdate();
+            }
+
+            // optimization list view
+            {
+                m_optimizationListView.BeginUpdate();
+                m_optimizationListView.Items.Clear();
+
+                m_optimizationListView.Items.Add(new ListViewItem(new string[] { $"OptX",
+                                                                                 $"{Experiment.Optimum.OptX:F2}"}));
+                m_optimizationListView.Items.Add(new ListViewItem(new string[] { $"OptF",
+                                                                                 $"{Experiment.Optimum.OptF:F2}"}));
+                m_optimizationListView.Items.Add(new ListViewItem(new string[] { $"ε",
+                                                                                 $"{Experiment.OptimumQuality:G}"}));
+
+                m_optimizationDataColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                m_optimizationDataColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+                m_optimizationValueColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                m_optimizationValueColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+                m_optimizationListView.EndUpdate();
+            }
+
             // plot view
             {
                 var plotModel = new PlotModel()
