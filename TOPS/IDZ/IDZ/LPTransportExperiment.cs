@@ -17,10 +17,12 @@ namespace IDZ
                                                   40,
                                                   25,
                                                   15 };
+        internal double TotalDepotStock => Depot.Aggregate((p, c) => p + c);
 
         internal double[] TargetCenter => new double[] { 60 + 10 * Variant, 
                                                          50 + 10 * Variant, 
                                                          50 };
+        internal double TotalTargetCenterStock => TargetCenter.Aggregate((p, c) => p + c);
 
         internal double[,] Price => new double[,] { { 10, 8, 5 },
                                                     {  5, 6, 5 },
@@ -37,7 +39,7 @@ namespace IDZ
         {
             Debug.Assert(Depot.Length == Price.GetLength(0));
             Debug.Assert(TargetCenter.Length == Price.GetLength(1));
-            Debug.Assert(Depot.Aggregate((p, c) => p + c) == TargetCenter.Aggregate((p, c) => p + c));
+            Debug.Assert(TotalDepotStock == TotalTargetCenterStock);
 
             var flatPrice = Price.Cast<double>().ToArray();
             var solver = new LPSolver(flatPrice, LPSolver.LPType.Integer);
