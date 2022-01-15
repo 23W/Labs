@@ -47,7 +47,8 @@ namespace IDZ
 
         double[] CalcA()
         {
-            if (!m_a?.Any() ?? true)
+            bool isCalculated = m_a?.Any() ?? false;
+            if (!isCalculated)
             {
                 var t = new DoubleMatrix(Rank, Rank);
                 for (var r = 0; r < Rank; r++)
@@ -68,7 +69,7 @@ namespace IDZ
                 m_a = a.Col(0).ToArray();
             }
 
-            return m_a;
+            return m_a ?? Array.Empty<double>();
         }
 
         double[] m_a = Array.Empty<double>();

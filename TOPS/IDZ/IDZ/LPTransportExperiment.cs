@@ -9,7 +9,7 @@ namespace IDZ
 {
     internal class LPTransportExperiment
     {
-        internal int Variant => 23;
+        internal int Variant => 8;
 
         internal double[] Depot => new double[] { 20 + 10 * Variant, 
                                                   30,
