@@ -156,7 +156,119 @@ namespace IDZ
                 m_optimizationListView.EndUpdate();
             }
 
-            // plot view
+            // manufacture plot view
+            {
+                var plotModel = new PlotModel()
+                {
+                    Background = OxyColors.White,
+                    PlotAreaBorderColor = OxyColors.Black
+                };
+
+                // axes
+                {
+                    var xAxis = new LinearAxis()
+                    {
+                        Title = "Item #1",
+                        Position = AxisPosition.Bottom,
+                        IsPanEnabled = false,
+                        IsZoomEnabled = false,
+                        MajorGridlineStyle = LineStyle.Solid,
+                        MinorGridlineStyle = LineStyle.Dot
+                    };
+
+                    var yAxis = new LinearAxis()
+                    {
+                        Title = "Item #2",
+                        Position = AxisPosition.Left,
+                        IsPanEnabled = false,
+                        IsZoomEnabled = false,
+                        MajorGridlineStyle = LineStyle.Solid,
+                        MinorGridlineStyle = LineStyle.Dot
+                    };
+
+                    plotModel.Axes.Add(xAxis);
+                    plotModel.Axes.Add(yAxis);
+                }
+
+                // legend
+                {
+                    var l = new Legend()
+                    {
+                        LegendPlacement = LegendPlacement.Inside
+                    };
+
+                    plotModel.Legends.Add(l);
+                }
+
+                // functions
+                {
+                    var x0 = -100.0; 
+                    var x1 = 100.0;
+                    const int fnSteps = 500;
+                    var dx = (x1-x0)/ fnSteps;
+
+                    var cardboardF = new Func<double, double>(x => (ManufactureExpariment.CardboardAmount - ManufactureExpariment.Cardboard1 * x) /
+                                                                    ManufactureExpariment.Cardboard2);
+                    var cardboardFs = new FunctionSeries(cardboardF, x0, x1, dx, "Carboard") 
+                    { 
+                        Color = OxyColors.RosyBrown
+                    };
+
+                    var laborCostF = new Func<double, double>(x => (ManufactureExpariment.LaborCostAmount - ManufactureExpariment.LaborCost1 * x) /
+                                                                    ManufactureExpariment.LaborCost2);
+                    var laborCostFs = new FunctionSeries(laborCostF, x0, x1, dx, "Labor Cost")
+                    {
+                        Color = OxyColors.BlueViolet
+                    };
+
+                    var energyF = new Func<double, double>(x => (ManufactureExpariment.EnergyAmount - ManufactureExpariment.Energy1 * x) /
+                                                                 ManufactureExpariment.Energy2);
+                    var energyFs = new FunctionSeries(energyF, x0, x1, dx, "Energy")
+                    {
+                        Color = OxyColors.LawnGreen
+                    };
+
+                    plotModel.Series.Add(cardboardFs);
+                    plotModel.Series.Add(laborCostFs);
+                    plotModel.Series.Add(energyFs);
+                }
+
+                // optimal point
+                if (ManufactureExpariment.HasResult)
+                {
+                    var lineItem1 = new LineAnnotation()
+                    {
+                        Type = LineAnnotationType.Vertical,
+                        X = ManufactureExpariment.ResultQuantity[0],
+                        Layer = AnnotationLayer.BelowSeries,
+                    };
+
+                    var lineItem2 = new LineAnnotation()
+                    {
+                        Type = LineAnnotationType.Horizontal,
+                        Y = ManufactureExpariment.ResultQuantity[1],
+                        Layer = AnnotationLayer.BelowSeries,
+                    };
+
+                    var point = new PointAnnotation()
+                    {
+                        X = ManufactureExpariment.ResultQuantity[0],
+                        Y = ManufactureExpariment.ResultQuantity[1],
+                        Shape = MarkerType.Triangle,
+                        StrokeThickness = 1,
+                        Stroke = OxyColors.Black,
+                        Fill = OxyColors.White,
+                    };
+
+                    plotModel.Annotations.Add(lineItem1);
+                    plotModel.Annotations.Add(lineItem2);
+                    plotModel.Annotations.Add(point);
+                }
+
+                m_manufacturePlotView.Model = plotModel;
+            }
+
+            // poly plot view
             {
                 var plotModel = new PlotModel()
                 {
