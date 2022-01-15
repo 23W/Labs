@@ -36,7 +36,6 @@ namespace IDZ
         void UpdateControls()
         {
             // poly table list view
-            
             {
                 m_tableListView.BeginUpdate();
                 m_tableListView.Items.Clear();
@@ -45,8 +44,8 @@ namespace IDZ
                 {
                     for (var p = 0; p < PolyExperiment.TableRank; p++)
                     {
-                        m_tableListView.Items.Add(new ListViewItem(new string[] { $"{PolyExperiment.TableFunction.X[p]:F2}",
-                                                                                  $"{PolyExperiment.TableFunction.Y[p]:F2}"}));
+                        m_tableListView.Items.Add(new ListViewItem(new string[] { $"{PolyExperiment.TableFunction.X[p]:F3}",
+                                                                                  $"{PolyExperiment.TableFunction.Y[p]:F3}"}));
                     }
 
                     ResizeListViewColumns(m_tableListView);
