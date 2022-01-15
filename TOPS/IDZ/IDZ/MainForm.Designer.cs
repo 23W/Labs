@@ -55,6 +55,7 @@
             this.m_transportDetailsListView = new System.Windows.Forms.ListView();
             this.m_transportDetailsDataColumnHeader = new System.Windows.Forms.ColumnHeader();
             this.m_transportDetailsValueColumnHeader = new System.Windows.Forms.ColumnHeader();
+            this.m_manufacturePlotView = new OxyPlot.WindowsForms.PlotView();
             this.m_tasksTabControl.SuspendLayout();
             this.m_polyTabPage.SuspendLayout();
             this.m_lpTaskTabPage.SuspendLayout();
@@ -235,14 +236,16 @@
             this.m_lpTasksTableLayoutPanel.Controls.Add(this.m_manufactureListView, 0, 1);
             this.m_lpTasksTableLayoutPanel.Controls.Add(this.m_transportLabel, 1, 0);
             this.m_lpTasksTableLayoutPanel.Controls.Add(this.m_transportPlanListView, 1, 1);
-            this.m_lpTasksTableLayoutPanel.Controls.Add(this.m_transportDetailsListView, 1, 2);
+            this.m_lpTasksTableLayoutPanel.Controls.Add(this.m_transportDetailsListView, 1, 3);
+            this.m_lpTasksTableLayoutPanel.Controls.Add(this.m_manufacturePlotView, 0, 2);
             this.m_lpTasksTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.m_lpTasksTableLayoutPanel.Location = new System.Drawing.Point(3, 3);
             this.m_lpTasksTableLayoutPanel.Name = "m_lpTasksTableLayoutPanel";
-            this.m_lpTasksTableLayoutPanel.RowCount = 3;
+            this.m_lpTasksTableLayoutPanel.RowCount = 4;
             this.m_lpTasksTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.m_lpTasksTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            this.m_lpTasksTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.m_lpTasksTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            this.m_lpTasksTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 30F));
             this.m_lpTasksTableLayoutPanel.Size = new System.Drawing.Size(1116, 586);
             this.m_lpTasksTableLayoutPanel.TabIndex = 2;
             // 
@@ -266,8 +269,7 @@
             this.m_manufactureListView.HideSelection = false;
             this.m_manufactureListView.Location = new System.Drawing.Point(3, 23);
             this.m_manufactureListView.Name = "m_manufactureListView";
-            this.m_lpTasksTableLayoutPanel.SetRowSpan(this.m_manufactureListView, 2);
-            this.m_manufactureListView.Size = new System.Drawing.Size(552, 560);
+            this.m_manufactureListView.Size = new System.Drawing.Size(552, 163);
             this.m_manufactureListView.TabIndex = 1;
             this.m_manufactureListView.UseCompatibleStateImageBehavior = false;
             this.m_manufactureListView.View = System.Windows.Forms.View.Details;
@@ -297,7 +299,8 @@
             this.m_transportPlanListView.HideSelection = false;
             this.m_transportPlanListView.Location = new System.Drawing.Point(561, 23);
             this.m_transportPlanListView.Name = "m_transportPlanListView";
-            this.m_transportPlanListView.Size = new System.Drawing.Size(552, 333);
+            this.m_lpTasksTableLayoutPanel.SetRowSpan(this.m_transportPlanListView, 2);
+            this.m_transportPlanListView.Size = new System.Drawing.Size(552, 389);
             this.m_transportPlanListView.TabIndex = 2;
             this.m_transportPlanListView.UseCompatibleStateImageBehavior = false;
             this.m_transportPlanListView.View = System.Windows.Forms.View.Details;
@@ -311,9 +314,9 @@
             this.m_transportDetailsListView.FullRowSelect = true;
             this.m_transportDetailsListView.GridLines = true;
             this.m_transportDetailsListView.HideSelection = false;
-            this.m_transportDetailsListView.Location = new System.Drawing.Point(561, 362);
+            this.m_transportDetailsListView.Location = new System.Drawing.Point(561, 418);
             this.m_transportDetailsListView.Name = "m_transportDetailsListView";
-            this.m_transportDetailsListView.Size = new System.Drawing.Size(552, 221);
+            this.m_transportDetailsListView.Size = new System.Drawing.Size(552, 165);
             this.m_transportDetailsListView.TabIndex = 3;
             this.m_transportDetailsListView.UseCompatibleStateImageBehavior = false;
             this.m_transportDetailsListView.View = System.Windows.Forms.View.Details;
@@ -325,6 +328,21 @@
             // m_transportDetailsValueColumnHeader
             // 
             this.m_transportDetailsValueColumnHeader.Text = "Value";
+            // 
+            // m_manufacturePlotView
+            // 
+            this.m_manufacturePlotView.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.m_manufacturePlotView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.m_manufacturePlotView.Location = new System.Drawing.Point(3, 192);
+            this.m_manufacturePlotView.Name = "m_manufacturePlotView";
+            this.m_manufacturePlotView.PanCursor = System.Windows.Forms.Cursors.Hand;
+            this.m_lpTasksTableLayoutPanel.SetRowSpan(this.m_manufacturePlotView, 2);
+            this.m_manufacturePlotView.Size = new System.Drawing.Size(552, 391);
+            this.m_manufacturePlotView.TabIndex = 4;
+            this.m_manufacturePlotView.Text = "Manufacture PlotView";
+            this.m_manufacturePlotView.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
+            this.m_manufacturePlotView.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
+            this.m_manufacturePlotView.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
             // 
             // MainForm
             // 
@@ -375,5 +393,6 @@
         private System.Windows.Forms.ListView m_transportDetailsListView;
         private System.Windows.Forms.ColumnHeader m_transportDetailsDataColumnHeader;
         private System.Windows.Forms.ColumnHeader m_transportDetailsValueColumnHeader;
+        private OxyPlot.WindowsForms.PlotView m_manufacturePlotView;
     }
 }
