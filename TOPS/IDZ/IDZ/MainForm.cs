@@ -35,24 +35,89 @@ namespace IDZ
 
         void UpdateControls()
         {
-            // table list view
-            if (PolyExperiment.TableFunction != default)
+            // poly table list view
+            
             {
                 m_tableListView.BeginUpdate();
                 m_tableListView.Items.Clear();
 
-                for (var p = 0; p < PolyExperiment.TableRank; p++)
+                if (PolyExperiment.TableFunction != default)
                 {
-                    m_tableListView.Items.Add(new ListViewItem(new string[] { $"{PolyExperiment.TableFunction.X[p]:F2}",
-                                                                              $"{PolyExperiment.TableFunction.Y[p]:F2}"}));
+                    for (var p = 0; p < PolyExperiment.TableRank; p++)
+                    {
+                        m_tableListView.Items.Add(new ListViewItem(new string[] { $"{PolyExperiment.TableFunction.X[p]:F2}",
+                                                                                  $"{PolyExperiment.TableFunction.Y[p]:F2}"}));
+                    }
+
+                    ResizeListViewColumns(m_tableListView);
                 }
 
-                m_tableXColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
-                m_tableXColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
-                m_tableYColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
-                m_tableYColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
-
                 m_tableListView.EndUpdate();
+            }
+
+            // lp manufacture table list view
+            {
+                m_manufactureListView.BeginUpdate();
+                m_manufactureListView.Items.Clear();
+
+                if (ManufactureExpariment.HasResult)
+                {
+                    for (var i = 0; i < ManufactureExpariment.ResultQuantity.Length; i++)
+                    {
+                        m_manufactureListView.Items.Add(new ListViewItem(new string[] { $"Manufacture Item #{i+1:D}", 
+                                                                                        $"{ManufactureExpariment.ResultQuantity[i]:G} pcs" }));
+                    }
+
+                    m_manufactureListView.Items.Add(new ListViewItem(new string[] { $"Total income", 
+                                                                                    $"{ManufactureExpariment.ResultIncome:G} golds" }));
+
+                    ResizeListViewColumns(m_manufactureListView);
+                }
+                
+                m_manufactureListView.EndUpdate();
+            }
+
+            // lp transport table list view
+            {
+                m_transportPlanListView.BeginUpdate();
+                m_transportDetailsListView.BeginUpdate();
+
+                m_transportPlanListView.Items.Clear();
+                m_transportDetailsListView.Items.Clear();
+
+                if (TransportExperiment.HasResult)
+                {
+                    m_transportPlanListView.Columns.Clear();
+                    m_transportPlanListView.Columns.Add(new ColumnHeader() { Text = $"Depots" });
+
+                    for (var i = 0; i < TransportExperiment.TargetCenter.Length; i++)
+                    {
+                        m_transportPlanListView.Columns.Add(new ColumnHeader() { Text = $"Target Center #{i + 1}" });
+                    }
+
+                    for (var d = 0; d < TransportExperiment.ResultPlan.GetLength(0); d++)
+                    {
+                        var dItem = new ListViewItem($"Depot #{d + 1}");
+                        dItem.SubItems.AddRange(Enumerable.Range(0, TransportExperiment.ResultPlan.GetLength(1))
+                                                          .Select(tc => TransportExperiment.ResultPlan[d, tc]>0 ? $"{TransportExperiment.ResultPlan[d, tc]:F0}" : "-")
+                                                          .ToArray());
+
+                        m_transportPlanListView.Items.Add(dItem);
+                    }
+
+                    m_transportDetailsListView.Items.Add(new ListViewItem(new string[] { $"Total Depot Stock", 
+                                                                                         $"{TransportExperiment.TotalDepotStock:F0} pcs" }));
+                    m_transportDetailsListView.Items.Add(new ListViewItem(new string[] { $"Total Target Centers Capacity",
+                                                                                         $"{TransportExperiment.TotalTargetCenterStock:F0} pcs" }));
+                    m_transportDetailsListView.Items.Add(new ListViewItem(new string[] { $"Transport Fare",
+                                                                                         $"{TransportExperiment.ResultFare:F2} golds" }));
+
+                    ResizeListViewColumns(m_transportPlanListView);
+                    ResizeListViewColumns(m_transportDetailsListView);
+                }
+
+                m_transportPlanListView.EndUpdate();
+                m_transportDetailsListView.EndUpdate();
             }
 
             // polinomial list view
@@ -70,10 +135,7 @@ namespace IDZ
                 m_polyListView.Items.Add(new ListViewItem(new string[] { $"σ",
                                                                          $"{PolyExperiment.StdDev:F3}"}));
                 
-                m_polyDataColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
-                m_polyDataColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
-                m_polyValueColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
-                m_polyValueColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+                ResizeListViewColumns(m_polyListView);
 
                 m_polyListView.EndUpdate();
             }
@@ -90,10 +152,7 @@ namespace IDZ
                 m_optimizationListView.Items.Add(new ListViewItem(new string[] { $"ε",
                                                                                  $"{PolyExperiment.OptimumQuality:G}"}));
 
-                m_optimizationDataColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
-                m_optimizationDataColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
-                m_optimizationValueColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
-                m_optimizationValueColumnHeader.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+                ResizeListViewColumns(m_optimizationListView);
 
                 m_optimizationListView.EndUpdate();
             }
@@ -214,6 +273,15 @@ namespace IDZ
                 }
 
                 m_plotView.Model = plotModel;
+            }
+        }
+
+        static void ResizeListViewColumns(ListView listView)
+        {
+            foreach (var c in listView.Columns.Cast<ColumnHeader>())
+            {
+                c.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+                c.AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
             }
         }
 
