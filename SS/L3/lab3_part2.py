@@ -34,7 +34,7 @@ def wetCounties(years, top_limit):
         plt.figure(figsize=(10,8))
         plt.title(title)
         plt.xlabel("Years")
-        plt.ylabel("Preception (million cubic meters)")
+        plt.ylabel("Precipitation (million cubic meters)")
         plt.plot(tops_t, marker="o", linestyle="-")
         plt.savefig("./output/top{}wettest{}_graph.png".format(top_limit, years_title))
     

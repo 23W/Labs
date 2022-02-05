@@ -30,7 +30,7 @@ top10_t = top10.transpose()
 plt.figure(figsize=(10,8))
 plt.title("Top 10 driest countries")
 plt.xlabel("Years")
-plt.ylabel("Preception (million cubic meters)")
+plt.ylabel("Precipitation (million cubic meters)")
 plt.plot(top10_t, marker="o", linestyle="-")
 plt.savefig("./output/top10driest_graph.png")
 
