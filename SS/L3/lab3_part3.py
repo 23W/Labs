@@ -25,8 +25,8 @@ def countryPrecipitation(country, years):
         plt.figure(figsize=(10,8))
         plt.title(title)
         plt.xlabel("Years")
-        plt.ylabel("Precipitation_ (million cubic meters)")
-        plt.bar(np.arange(len(years)), precipitation, width=0.5)
+        plt.ylabel("Precipitation (million cubic meters)")
+        plt.bar(precipitation.index, precipitation, width=0.5)
         plt.savefig("./output/precipitation_{}_{}_bar.png".format(country, years_title))
 
     # Chart: Top wettest countries
