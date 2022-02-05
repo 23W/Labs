@@ -10,7 +10,7 @@ def wetCounties(years, top_limit):
     df = df.set_index(df['Country or Area'])
     df.drop(['Country or Area'], axis="columns", inplace=True)
 
-    #split years
+    #slice years
     df = df[years]
 
     # add SUM column and sort by descending order    
@@ -24,7 +24,7 @@ def wetCounties(years, top_limit):
     # Output: Wettest countries
     years_title =  "[{}..{}]".format(years[0], years[-1]) if len(years)>1 else str(years[0])
     title = "Top {} wettest countries in {}".format(top_limit, years_title)
-    with open("./output/top{}wettest{}_graph.txt".format(top_limit, years_title), 'w') as f:
+    with open("./output/top{}wettest{}_data.txt".format(top_limit, years_title), 'w') as f:
         print(title, file=f)
         print(tops, file=f)
 
