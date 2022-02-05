@@ -1,3 +1,4 @@
+import os
 import pandas
 import matplotlib.pyplot as plt, numpy as np
 
@@ -34,7 +35,7 @@ def wetCounties(years, top_limit):
         plt.xlabel("Years")
         plt.ylabel("Preception (million cubic meters)")
         plt.plot(tops_t, marker="o", linestyle="-")
-        plt.savefig("top{}wettest{}_graph.png".format(top_limit, years_title))
+        plt.savefig("./output/top{}wettest{}_graph.png".format(top_limit, years_title))
     
     # Chart: Top wettest countries
     if top_limit>1:
@@ -44,7 +45,7 @@ def wetCounties(years, top_limit):
         plt.axis("equal")
         plt.title(title, y=1.08)
         plt.pie(tops_sums, labels=tops_sums.index, autopct="%1.2f%%", radius=1.25)
-        plt.savefig("top{}wettest{}_comp_chart.png".format(top_limit, years_title))
+        plt.savefig("./output/top{}wettest{}_comp_chart.png".format(top_limit, years_title))
 
         title = "Full chart of top {} wettest countries in {}".format(top_limit, years_title)
         tops_sums["Other"] = sorted_df["SUM"][top_limit:].sum()
@@ -52,9 +53,12 @@ def wetCounties(years, top_limit):
         plt.axis("equal")
         plt.title(title, y=1.08)
         plt.pie(tops_sums, labels=tops_sums.index, autopct="%1.2f%%", radius=1.25)
-        plt.savefig("top{}wettest{}_other_chart.png".format(top_limit, years_title))
+        plt.savefig("./output/top{}wettest{}_other_chart.png".format(top_limit, years_title))
 
 # Main
+if not os.path.exists('output'):
+    os.makedirs('output')
+
 range1 = ["1990"] # range [1990...1990]
 range2 = ["{:d}".format(x) for x in range(1995, 2010)] # range [1995...2010)
 wetCounties(range1, 5)
