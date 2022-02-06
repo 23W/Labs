@@ -28,6 +28,10 @@ def wetCounties(years, top_limit):
         print(title, file=f)
         print(tops, file=f)
 
+    with open("./output/top{}wettest{}_sum.txt".format(top_limit, years_title), 'w') as f:
+        print(title, file=f)
+        print(tops_sum["SUM"], file=f)
+
     # Graph: Top wettest countries
     if len(years)>1:
         tops_t = tops.transpose()

@@ -25,6 +25,10 @@ top10 = sorted_df[years][0:10]
 with open("./output/top10driest.txt", 'w') as f:
     print(top10, file=f)
 
+# Output: Top 10 driest countries
+with open("./output/top10driestSUM.txt", 'w') as f:
+    print(top10_sums["SUM"], file=f)
+
 # Graph: Top 10 driest countries
 top10_t = top10.transpose()
 plt.figure(figsize=(10,8))
