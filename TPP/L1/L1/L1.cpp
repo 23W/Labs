@@ -62,17 +62,39 @@ int main()
         std::cout << "\tSum of 1000 by QueryPerformanceCounter: ";
         (sumPerformance_qpc > 0) ? std::cout << sumPerformance_qpc : std::cout << "< 100";
         std::cout << " nanoseconds" << std::endl;
+    }
+
+    // Task 4
+    {
+        std::cout << "Task 4. Absolute & Relative Performance" << std::endl;
 
         std::cout << "\tPer data size" << std::endl;
         const int dataSets[] = { 100000, 2* 100000, 3* 100000 };
-        for(auto dataSize : dataSets)
-        {
-            const auto performance = SumPerfromanceOmpWTime(dataSize);
-            const auto relativePerformance = SumRelativePerfromanceTickCount(dataSize);
+        double performance[] = { 0, 0, 0 };
+        size_t relativePerformance[] = { 0, 0, 0 };
 
-            std::cout << "\t\t" << dataSize;
-            std::cout << " absolute: " << performance << " nanoseconds";
-            std::cout << ", relative: " << relativePerformance << " times per 2 seconds";
+        for (size_t index = 0; index < std::size(dataSets); index++)
+        {
+            performance[index] = std::round(SumPerfromanceOmpWTime(dataSets[index]));
+            relativePerformance[index] = SumRelativePerfromanceTickCount(dataSets[index]);
+        }
+
+        for (size_t index = 0; index < std::size(dataSets); index++)
+        {
+            std::cout << "\t\t" << dataSets[index];
+            
+            std::cout << " absolute: " << performance[index] << " nanoseconds";
+            if (index > 0)
+            {
+                std::cout << " (Tx = " << performance[index]/ performance[0] << ")";
+            }
+
+            std::cout << ", relative: " << relativePerformance[index] << " times per 2 seconds";
+            if (index > 0)
+            {
+                std::cout << " (Tx = " << ((double)relativePerformance[0]) / relativePerformance[index] << ")";
+            }
+
             std::cout << std::endl;
         }
     }
