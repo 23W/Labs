@@ -40,11 +40,12 @@ size_t CalcRelativePerformance(F f, Timer t, Duration interval)
     size_t perfomanceCounter = 0;
 
     TimePoint startPoint = t();
-    while (static_cast<Duration>(t() - startPoint) < interval)
+    do
     {
         f();
         perfomanceCounter++;
     }
+    while (static_cast<Duration>(t() - startPoint) < interval);
 
     return perfomanceCounter;
 }

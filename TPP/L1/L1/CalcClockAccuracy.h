@@ -4,12 +4,13 @@ template<typename TimePoint, typename Duration, class F>
 Duration CalcClockAccuracy(F f)
 {
     TimePoint startPoint = f();
-    TimePoint endPoint = startPoint;
+    TimePoint endPoint;
 
-    while (startPoint == endPoint)
+    do
     {
         endPoint = f();
     }
+    while (startPoint == endPoint);
 
     return endPoint - startPoint;
 }

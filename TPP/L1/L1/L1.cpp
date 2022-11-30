@@ -1,3 +1,4 @@
+#include <ctime>
 #include <iostream>
 
 #include "ChronoAccuracy.h"
@@ -18,7 +19,16 @@ int main()
 
     // Task 1
     {
+        std::cout << "Task 1." << std::endl;
 
+        time_t time = 0x7FFFFFFF;
+
+        tm timeStruct = {0};
+        localtime_s(&timeStruct, &time);
+
+        std::cout << "\tTime 0x7FFFFFFF is ";
+        std::cout << timeStruct.tm_mday << "." << (timeStruct.tm_mon + 1) << "." << (timeStruct.tm_year + 1900) << " ";
+        std::cout << timeStruct.tm_hour << ":" << timeStruct.tm_min << ":" << timeStruct.tm_sec << std::endl;
     }
 
     // Task 2
@@ -159,7 +169,7 @@ int main()
                 Matrix<float> c;
 
                 const auto perf = CalcPerformanceChrono([&]() { c.Mult(a, b); });
-                object_performance[index] = std::chrono::duration_cast<std::chrono::milliseconds>(perf).count();;
+                object_performance[index] = std::chrono::duration_cast<std::chrono::milliseconds>(perf).count();
 
                 ForceToBeLinked(c.GetData());
             }
@@ -168,9 +178,88 @@ int main()
         for (size_t index = 0; index < std::size(matrixSize); index++)
         {
             auto size = matrixSize[index];
-            std::cout << "\t" << size << std::endl;
-            std::cout << "\t\tFunctional: " << functional_performance[index] << " milliseconds" << std::endl;;
-            std::cout << "\t\tObject: " << object_performance[index] << " milliseconds" << std::endl;;
+            std::cout << "\t" << size << "x" << size << std::endl;
+            std::cout << "\t\tFunctional: " << functional_performance[index] << " milliseconds" << std::endl;
+            std::cout << "\t\tObject: " << object_performance[index] << " milliseconds" << std::endl;
+        }
+    }
+
+    // Task 9
+    {
+        std::cout << "Task 9. Matrix mutiplication performance by data type" << std::endl;
+
+        const size_t size = 1024;
+
+        // int8
+        {
+            Matrix<int8_t> a(size);
+            Matrix<int8_t> b(size);
+            Matrix<int8_t> c;
+
+            const auto perf = CalcPerformanceChrono([&]() { c.Mult(a, b); });
+            const auto perf_durationc = std::chrono::duration_cast<std::chrono::milliseconds>(perf).count();
+
+            std::cout << "\tint8: " << perf_durationc << " milliseconds" << std::endl;
+        }
+
+        // int16
+        {
+            Matrix<int16_t> a(size);
+            Matrix<int16_t> b(size);
+            Matrix<int16_t> c;
+
+            const auto perf = CalcPerformanceChrono([&]() { c.Mult(a, b); });
+            const auto perf_durationc = std::chrono::duration_cast<std::chrono::milliseconds>(perf).count();
+
+            std::cout << "\tint16: " << perf_durationc << " milliseconds" << std::endl;
+        }
+
+        // int32
+        {
+            Matrix<int32_t> a(size);
+            Matrix<int32_t> b(size);
+            Matrix<int32_t> c;
+
+            const auto perf = CalcPerformanceChrono([&]() { c.Mult(a, b); });
+            const auto perf_durationc = std::chrono::duration_cast<std::chrono::milliseconds>(perf).count();
+
+            std::cout << "\tint32: " << perf_durationc << " milliseconds" << std::endl;
+        }
+
+        // int64
+        {
+            Matrix<int64_t> a(size);
+            Matrix<int64_t> b(size);
+            Matrix<int64_t> c;
+
+            const auto perf = CalcPerformanceChrono([&]() { c.Mult(a, b); });
+            const auto perf_durationc = std::chrono::duration_cast<std::chrono::milliseconds>(perf).count();
+
+            std::cout << "\tint64: " << perf_durationc << " milliseconds" << std::endl;
+        }
+
+        // float
+        {
+            Matrix<float> a(size);
+            Matrix<float> b(size);
+            Matrix<float> c;
+
+            const auto perf = CalcPerformanceChrono([&]() { c.Mult(a, b); });
+            const auto perf_durationc = std::chrono::duration_cast<std::chrono::milliseconds>(perf).count();
+
+            std::cout << "\tfloat: " << perf_durationc << " milliseconds" << std::endl;
+        }
+
+        // double
+        {
+            Matrix<double> a(size);
+            Matrix<double> b(size);
+            Matrix<double> c;
+
+            const auto perf = CalcPerformanceChrono([&]() { c.Mult(a, b); });
+            const auto perf_durationc = std::chrono::duration_cast<std::chrono::milliseconds>(perf).count();
+
+            std::cout << "\tdouble: " << perf_durationc << " milliseconds" << std::endl;
         }
     }
 }
