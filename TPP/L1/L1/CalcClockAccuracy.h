@@ -12,5 +12,5 @@ Duration CalcClockAccuracy(F f)
     }
     while (startPoint == endPoint);
 
-    return endPoint - startPoint;
+    return static_cast<Duration>(endPoint - startPoint);
 }
