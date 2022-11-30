@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "ChronoAccuracy.h"
+#include "ForceToBeLink.h"
 #include "GetSystemTimeAsFileTimeAccuracy.h"
 #include "GetTickCountAccuracy.h"
 #include "QueryPerformanceCounterAccuracy.h"
@@ -121,11 +122,55 @@ int main()
             Matrix<float> a{ 1.f,2.f,3.f, 4.f,5.f,6.f, 7.f,8.f,9.f };
             Matrix<float> b{ 9.f,8.f,7.f, 6.f,5.f,4.f, 3.f,2.f,1.f };
             Matrix<float> c;
-            
+
             const auto perf = CalcPerformanceChrono([&]() { c.Mult(a, b); });
             c.Output("\t\t");
 
             std::cout << "\tPerformance: " << perf.count() << " nanoseconds" << std::endl;
+        }
+    }
+
+    // Task 7
+    {
+        std::cout << "Task 7. Matrix mutiplication performance per size" << std::endl;
+
+        const int matrixSize[] = { 512, 1024, 2048 };
+        size_t functional_performance[] = { 0, 0, 0 };
+        size_t object_performance[] = { 0, 0, 0 };
+
+        for (size_t index = 0; index < std::size(matrixSize); index++)
+        {
+            auto size = matrixSize[index];
+
+            {
+                std::vector<float> a(size* size, 0.f);
+                std::vector<float> b(size* size, 0.f);
+                std::vector<float> c(size* size);
+
+                const auto perf = CalcPerformanceChrono([&]() { MatrixMult(a.data(), b.data(), c.data(), size); });
+                functional_performance[index] = std::chrono::duration_cast<std::chrono::milliseconds>(perf).count();
+
+                ForceToBeLinked(c.data());
+            }
+
+            {
+                Matrix<float> a(size);
+                Matrix<float> b(size);
+                Matrix<float> c;
+
+                const auto perf = CalcPerformanceChrono([&]() { c.Mult(a, b); });
+                object_performance[index] = std::chrono::duration_cast<std::chrono::milliseconds>(perf).count();;
+
+                ForceToBeLinked(c.GetData());
+            }
+        }
+
+        for (size_t index = 0; index < std::size(matrixSize); index++)
+        {
+            auto size = matrixSize[index];
+            std::cout << "\t" << size << std::endl;
+            std::cout << "\t\tFunctional: " << functional_performance[index] << " milliseconds" << std::endl;;
+            std::cout << "\t\tObject: " << object_performance[index] << " milliseconds" << std::endl;;
         }
     }
 }
