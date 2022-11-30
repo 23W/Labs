@@ -22,6 +22,9 @@
     <Filter Include="Source Files\Utils">
       <UniqueIdentifier>{615d0590-ae35-4e80-9f38-ee3c07f16bf2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Matrix">
+      <UniqueIdentifier>{1bd031d8-9d48-4fc0-9ea6-3c4361cef40f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="L1.cpp">
@@ -61,6 +64,9 @@
     </ClInclude>
     <ClInclude Include="ForceToBeLink.h">
       <Filter>Source Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Source Files\Matrix</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

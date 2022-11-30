@@ -4,6 +4,7 @@
 #include "GetSystemTimeAsFileTimeAccuracy.h"
 #include "GetTickCountAccuracy.h"
 #include "QueryPerformanceCounterAccuracy.h"
+#include "Matrix.h"
 #include "OmpWTimeAccuracy.h"
 #include "RDTSCAccuracy.h"
 #include "SumPerformance.h"
@@ -96,6 +97,35 @@ int main()
             }
 
             std::cout << std::endl;
+        }
+    }
+
+    // Task 5
+    {
+        std::cout << "Task 5. Matrix functional vs object" << std::endl;
+
+        std::cout << "\tFuntional A x B = C" << std::endl;
+        {
+            float a[3][3] = { {1,2,3}, {4,5,6}, {7,8,9} };
+            float b[3][3] = { {9,8,7}, {6,5,4}, {3,2,1} };
+            float c[3][3];
+
+            const auto perf = CalcPerformanceChrono([&]() { MatrixMult((float*)a, (float*)b, (float*)c, 3); });
+            MatrixOutput((float*)c, 3, "\t\t");
+
+            std::cout << "\tPerformance: " << perf.count() << " nanoseconds" << std::endl;
+        }
+
+        std::cout << "\tObject A x B = C" << std::endl;
+        {
+            Matrix<float> a{ 1.f,2.f,3.f, 4.f,5.f,6.f, 7.f,8.f,9.f };
+            Matrix<float> b{ 9.f,8.f,7.f, 6.f,5.f,4.f, 3.f,2.f,1.f };
+            Matrix<float> c;
+            
+            const auto perf = CalcPerformanceChrono([&]() { c.Mult(a, b); });
+            c.Output("\t\t");
+
+            std::cout << "\tPerformance: " << perf.count() << " nanoseconds" << std::endl;
         }
     }
 }

@@ -140,6 +140,7 @@
     <ClInclude Include="ForceToBeLink.h" />
     <ClInclude Include="GetSystemTimeAsFileTimeAccuracy.h" />
     <ClInclude Include="GetTickCountAccuracy.h" />
+    <ClInclude Include="Matrix.h" />
     <ClInclude Include="OmpWTimeAccuracy.h" />
     <ClInclude Include="QueryPerformanceCounterAccuracy.h" />
     <ClInclude Include="RDTSCAccuracy.h" />
