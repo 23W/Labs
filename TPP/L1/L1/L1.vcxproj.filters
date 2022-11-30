@@ -16,6 +16,12 @@
     <Filter Include="Source Files\Accuracy">
       <UniqueIdentifier>{1949a8ff-ddae-48b7-bffc-d86a0f6b675f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Performance">
+      <UniqueIdentifier>{d2cfcbfd-7cd3-4719-af98-975847e3bf5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{615d0590-ae35-4e80-9f38-ee3c07f16bf2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="L1.cpp">
@@ -46,6 +52,15 @@
     </ClInclude>
     <ClInclude Include="QueryPerformanceCounterAccuracy.h">
       <Filter>Source Files\Accuracy</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcPerformance.h">
+      <Filter>Source Files\Performance</Filter>
+    </ClInclude>
+    <ClInclude Include="SumPerformance.h">
+      <Filter>Source Files\Performance</Filter>
+    </ClInclude>
+    <ClInclude Include="ForceToBeLink.h">
+      <Filter>Source Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -15,7 +15,7 @@ auto QueryPerformanceCounterAccuracy()
         {
             LARGE_INTEGER res;
             QueryPerformanceCounter(&res);
-        
+
             return res.QuadPart;
         });
 

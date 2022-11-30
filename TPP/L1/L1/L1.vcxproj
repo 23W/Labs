@@ -76,6 +76,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -90,6 +91,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -104,6 +106,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -118,6 +121,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -130,13 +134,16 @@
     <ClCompile Include="L1.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CalcPerformance.h" />
     <ClInclude Include="ChronoAccuracy.h" />
     <ClInclude Include="CalcClockAccuracy.h" />
+    <ClInclude Include="ForceToBeLink.h" />
     <ClInclude Include="GetSystemTimeAsFileTimeAccuracy.h" />
     <ClInclude Include="GetTickCountAccuracy.h" />
     <ClInclude Include="OmpWTimeAccuracy.h" />
     <ClInclude Include="QueryPerformanceCounterAccuracy.h" />
     <ClInclude Include="RDTSCAccuracy.h" />
+    <ClInclude Include="SumPerformance.h" />
     <ClInclude Include="TimeAccuracy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

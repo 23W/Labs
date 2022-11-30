@@ -6,6 +6,7 @@
 #include "QueryPerformanceCounterAccuracy.h"
 #include "OmpWTimeAccuracy.h"
 #include "RDTSCAccuracy.h"
+#include "SumPerformance.h"
 #include "TimeAccuracy.h"
 
 
@@ -48,5 +49,18 @@ int main()
 
         const auto omp_res = OmpWTimeAccuracy();
         std::cout << "\tomp_get_wtime: " << omp_res << " nanoseconds" << std::endl;
+    }
+
+    // Task 3
+    {
+        std::cout << "Task 3. Performance of Sum 1000" << std::endl;
+
+        const auto sumPerformance_rdtsc = SumPerfromanceRDTSC();
+        std::cout << "\t Sum of 1000 by __rdtsc: " << sumPerformance_rdtsc << " ticks" << std::endl;
+        
+        const auto sumPerformance_qpc = SumPerfromanceQueryPerformaceCounter();
+        std::cout << "\t Sum of 1000 by QueryPerformanceCounter: ";
+        (sumPerformance_qpc > 0) ? std::cout << sumPerformance_qpc : std::cout << "< 100";
+        std::cout << " nanoseconds" << std::endl;
     }
 }
