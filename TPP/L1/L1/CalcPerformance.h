@@ -20,3 +20,18 @@ Duration CalcPerformance(F f, Timer t, unsigned int attempts = 1)
     const auto it = std::min_element(std::begin(samples), std::end(samples));
     return *it;
 }
+
+template<typename TimePoint, typename Duration, class Timer, class F>
+size_t CalcRelativePerformance(F f, Timer t, Duration interval)
+{
+    size_t perfomanceCounter = 0;
+
+    TimePoint startPoint = t();
+    while (static_cast<Duration>(t() - startPoint) < interval)
+    {
+        f();
+        perfomanceCounter++;
+    }
+
+    return perfomanceCounter;
+}

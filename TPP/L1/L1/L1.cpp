@@ -56,11 +56,24 @@ int main()
         std::cout << "Task 3. Performance of Sum 1000" << std::endl;
 
         const auto sumPerformance_rdtsc = SumPerfromanceRDTSC();
-        std::cout << "\t Sum of 1000 by __rdtsc: " << sumPerformance_rdtsc << " ticks" << std::endl;
-        
+        std::cout << "\tSum of 1000 by __rdtsc: " << sumPerformance_rdtsc << " ticks" << std::endl;
+
         const auto sumPerformance_qpc = SumPerfromanceQueryPerformaceCounter();
-        std::cout << "\t Sum of 1000 by QueryPerformanceCounter: ";
+        std::cout << "\tSum of 1000 by QueryPerformanceCounter: ";
         (sumPerformance_qpc > 0) ? std::cout << sumPerformance_qpc : std::cout << "< 100";
         std::cout << " nanoseconds" << std::endl;
+
+        std::cout << "\tPer data size" << std::endl;
+        const int dataSets[] = { 100000, 2* 100000, 3* 100000 };
+        for(auto dataSize : dataSets)
+        {
+            const auto performance = SumPerfromanceOmpWTime(dataSize);
+            const auto relativePerformance = SumRelativePerfromanceTickCount(dataSize);
+
+            std::cout << "\t\t" << dataSize;
+            std::cout << " absolute: " << performance << " nanoseconds";
+            std::cout << ", relative: " << relativePerformance << " times per 2 seconds";
+            std::cout << std::endl;
+        }
     }
 }
