@@ -9,7 +9,6 @@
 #include "BinarySearch.h"
 #include "Dictionary.h"
 
-
 bool IsParallelEnabled()
 {
 #ifdef _OPENMP
@@ -18,6 +17,33 @@ bool IsParallelEnabled()
     return false;
 #endif // _OPENMP
 }
+
+void DoParallelBunchProcess(const TDictionary& dictionary, const std::vector<TDictionary::value_type>& bunch, std::ofstream& resultsStream)
+{
+    std::vector<TDictionary::const_iterator> results(bunch.size());
+    ParallelBinarySearch(std::begin(dictionary), std::end(dictionary),
+                         std::begin(bunch), std::end(bunch),
+                         std::begin(results));
+
+    auto resultIt = std::begin(results);
+    for (auto bunchIt = std::begin(bunch); bunchIt != std::end(bunch); ++bunchIt, ++resultIt)
+    {
+        auto& key = *bunchIt;
+        auto& dictIt = *resultIt;
+
+        resultsStream << key;
+
+        if (dictIt != std::end(dictionary))
+        {
+            resultsStream << " is found at index " << std::distance(std::begin(dictionary), dictIt) << std::endl;
+        }
+        else
+        {
+            resultsStream << " is NOT FOUND" << std::endl;
+        }
+    }
+}
+
 
 void ParallelProcess(const TDictionary& dictionary, const std::string& searchPath, const std::string& resultPath)
 {
@@ -29,46 +55,20 @@ void ParallelProcess(const TDictionary& dictionary, const std::string& searchPat
     std::vector<std::string> bunch;
     bunch.reserve(maxBunchSize);
 
-    const auto doParallelBunchSearch = [&]()
-    {
-        const auto searchResult = ParallelBinarySearch(std::begin(dictionary), std::end(dictionary),
-                                                       std::begin(bunch), std::end(bunch));
-
-        auto keyIt = std::begin(bunch);
-        auto resIt = std::begin(searchResult);
-        for (; keyIt != std::end(bunch); ++keyIt, ++resIt)
-        {
-            auto key = *keyIt;
-            auto dictIt = *resIt;
-
-            resultsStream << key;
-
-            if (dictIt != std::end(dictionary))
-            {
-                resultsStream << " is found at index " << std::distance(std::begin(dictionary), dictIt) << std::endl;
-            }
-            else
-            {
-                resultsStream << " is NOT FOUND" << std::endl;
-            }
-        }
-    };
-
     std::string key;
     while (std::getline(searchKeysStream, key))
     {
-        if (bunch.size() < maxBunchSize)
+        if (bunch.size() == maxBunchSize)
         {
-            bunch.emplace_back(std::move(key));
+            DoParallelBunchProcess(dictionary, bunch, resultsStream);
+            bunch.clear();
         }
-        else
-        {
-            doParallelBunchSearch();
-        }
+
+        bunch.emplace_back(std::move(key));
     }
 
     if (!bunch.empty())
     {
-        doParallelBunchSearch();
+        DoParallelBunchProcess(dictionary, bunch, resultsStream);
     }
 }
