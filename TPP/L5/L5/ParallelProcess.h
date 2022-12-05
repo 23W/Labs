@@ -52,6 +52,7 @@ void ParallelProcess(const TDictionary& dictionary, const std::string& searchPat
     std::ifstream searchKeysStream(searchPath);
     std::ofstream resultsStream(resultPath);
 
+    // 1. read keys
     std::string key;
     while (std::getline(searchKeysStream, key))
     {
@@ -60,12 +61,14 @@ void ParallelProcess(const TDictionary& dictionary, const std::string& searchPat
             continue;
         }
 
+        // 2. search keys in dictionary if bunch is ready
         if (bunch.size() == maxBunchSize)
         {
             ParallelBinarySearch(std::begin(dictionary), std::end(dictionary),
                                  std::begin(bunch), std::end(bunch),
                                  std::begin(bunchResults));
 
+            // 3. output search result
             OutputBunchProcess(dictionary, bunch, bunchResults, resultsStream);
 
             bunch.clear();
@@ -74,6 +77,7 @@ void ParallelProcess(const TDictionary& dictionary, const std::string& searchPat
         bunch.emplace_back(std::move(key));
     }
 
+    // calculate remains if we have it
     if (!bunch.empty())
     {
         ParallelBinarySearch(std::begin(dictionary), std::end(dictionary),
