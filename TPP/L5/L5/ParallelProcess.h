@@ -18,15 +18,10 @@ bool IsParallelEnabled()
 #endif // _OPENMP
 }
 
-void DoParallelBunchProcess(const TDictionary& dictionary, const std::vector<TDictionary::value_type>& bunch, std::ofstream& resultsStream)
+void OutputBunchProcess(const TDictionary& dictionary, const std::vector<TDictionary::value_type>& bunch, std::vector<TDictionary::const_iterator>& results, std::ofstream& resultsStream)
 {
-    std::vector<TDictionary::const_iterator> results(bunch.size());
-    ParallelBinarySearch(std::begin(dictionary), std::end(dictionary),
-                         std::begin(bunch), std::end(bunch),
-                         std::begin(results));
-
     auto resultIt = std::begin(results);
-    for (auto bunchIt = std::begin(bunch); bunchIt != std::end(bunch); ++bunchIt, ++resultIt)
+    for (auto bunchIt = std::begin(bunch), bunchEndIt = std::end(bunch); bunchIt != bunchEndIt; ++bunchIt, ++resultIt)
     {
         auto& key = *bunchIt;
         auto& dictIt = *resultIt;
@@ -47,20 +42,32 @@ void DoParallelBunchProcess(const TDictionary& dictionary, const std::vector<TDi
 
 void ParallelProcess(const TDictionary& dictionary, const std::string& searchPath, const std::string& resultPath)
 {
-    std::ifstream searchKeysStream(searchPath);
-    std::ofstream resultsStream(resultPath);
-
-    const auto maxBunchSize = omp_get_num_procs();
+    const auto maxBunchSize = 4000 * omp_get_num_procs();
 
     std::vector<std::string> bunch;
     bunch.reserve(maxBunchSize);
 
+    std::vector<TDictionary::const_iterator> bunchResults(maxBunchSize);
+
+    std::ifstream searchKeysStream(searchPath);
+    std::ofstream resultsStream(resultPath);
+
     std::string key;
     while (std::getline(searchKeysStream, key))
     {
+        if (key.empty())
+        {
+            continue;
+        }
+
         if (bunch.size() == maxBunchSize)
         {
-            DoParallelBunchProcess(dictionary, bunch, resultsStream);
+            ParallelBinarySearch(std::begin(dictionary), std::end(dictionary),
+                                 std::begin(bunch), std::end(bunch),
+                                 std::begin(bunchResults));
+
+            OutputBunchProcess(dictionary, bunch, bunchResults, resultsStream);
+
             bunch.clear();
         }
 
@@ -69,6 +76,10 @@ void ParallelProcess(const TDictionary& dictionary, const std::string& searchPat
 
     if (!bunch.empty())
     {
-        DoParallelBunchProcess(dictionary, bunch, resultsStream);
+        ParallelBinarySearch(std::begin(dictionary), std::end(dictionary),
+                             std::begin(bunch), std::end(bunch),
+                             std::begin(bunchResults));
+
+        OutputBunchProcess(dictionary, bunch, bunchResults, resultsStream);
     }
 }

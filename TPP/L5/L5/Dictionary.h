@@ -26,7 +26,10 @@ TDictionary LoadDictionary(const std::string& path)
             continue;
         }
 
-        dictionary.emplace_back(key);
+        if (!key.empty())
+        {
+            dictionary.emplace_back(key);
+        }
     }
 
     return dictionary;

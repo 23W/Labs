@@ -34,6 +34,6 @@ void ParallelBinarySearch(It first, It last, TIt firstValue, TIt lastValue, TOut
         const auto& value = *std::next(firstValue, i);
         It it = BinarySearch(first, last, value);
 
-        *std::next(result, i) = it;
+        *std::next(result, i) = std::move(it);
     }
 }

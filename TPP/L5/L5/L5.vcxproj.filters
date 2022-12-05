@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Data">
-      <UniqueIdentifier>{899c3863-4bbd-4104-a1ec-d5f837e43bb4}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="L5.cpp">
@@ -38,19 +35,5 @@
     <ClInclude Include="BinarySearch.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Keys.txt">
-      <Filter>Data</Filter>
-    </Text>
-    <Text Include="Search.txt">
-      <Filter>Data</Filter>
-    </Text>
-    <Text Include="SerialResults.txt">
-      <Filter>Data</Filter>
-    </Text>
-    <Text Include="ParallelResults.txt">
-      <Filter>Data</Filter>
-    </Text>
   </ItemGroup>
 </Project>

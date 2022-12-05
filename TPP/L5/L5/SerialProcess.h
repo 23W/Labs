@@ -15,6 +15,11 @@ void SerialProcess(const TDictionary& dictionary, const std::string& searchPath,
     std::string key;
     while (std::getline(searchKeysStream, key))
     {
+        if (key.empty())
+        {
+            continue;
+        }
+
         const auto it = BinarySearch(std::begin(dictionary), std::end(dictionary), key);
 
         resultsStream << key;
