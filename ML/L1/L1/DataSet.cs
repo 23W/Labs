@@ -6,25 +6,30 @@ using System.Threading.Tasks;
 
 namespace L1
 {
-    internal class Sample
+    public class Sample
     {
-        internal float[] X { get; set; } = new float[0];
+        public float[] X { get; set; } = new float[0];
 
-        internal int Length => X.Length;
+        public int Length => X.Length;
     }
 
-    internal class SampleWithClass : Sample
+    public class SampleWithClass : Sample
     {
-        internal float D = 1;
+        public float D { get; set; } = 1;
     }
 
-    internal class DataSet
+    public class SampleWithClassEstimation : SampleWithClass
     {
-        internal IEnumerable<SampleWithClass> Set => m_set;
+        public float E { get; set; } = 1;
+    }
 
-        internal int Length => Set.Any() ? Set.First().Length : 0;
+    public class DataSet<T> where T : SampleWithClass, new()
+    {
+        public IEnumerable<T> Set => m_set;
 
-        internal void Add(SampleWithClass sample)
+        public int Length => Set.Any() ? Set.First().Length : 0;
+
+        public void Add(T sample)
         {
             if (Set.Any() && Set.First().Length != sample.X.Length)
             {
@@ -34,19 +39,38 @@ namespace L1
             m_set.Add(sample);
         }
 
-        internal void Add(Sample sample, float dClass)
+        public void Add(Sample sample, float dClass)
         {
-            Add(new SampleWithClass() { X = sample.X, D = dClass });
+            Add(new T() { X = sample.X, D = dClass });
         }
 
-        internal void Add(float[] sample, float dClass)
+        public void Add(float[] sample, float dClass)
         {
-            Add(new SampleWithClass() { X = sample, D = dClass });
+            Add(new T() { X = sample, D = dClass });
+        }
+
+        public void Clear()
+        {
+            m_set.Clear();
+        }
+
+        public void Shuffle()
+        {
+            var random = new Random();
+
+            for (int i = m_set.Count - 1; i >= 1; i--)
+            {
+                int j = random.Next(i + 1);
+
+                var temp = m_set[j];
+                m_set[j] = m_set[i];
+                m_set[i] = temp;
+            }
         }
 
         #region Members
 
-        List<SampleWithClass> m_set = new List<SampleWithClass>();
+        List<T> m_set = new List<T>();
 
         #endregion
     }

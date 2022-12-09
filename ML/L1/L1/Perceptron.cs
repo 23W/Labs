@@ -2,27 +2,38 @@
 
 namespace L1
 {
-    internal class Perceptron
+    public class PerceptronTrainParameters
     {
-        internal float[] W { get; set; } = new float[1];
+        public int Iterations { get; set; } = 100;
 
-        internal int Length => W.Length - 1;
+        public float LearningRate { get; set; } = 0.1f;
+    }
 
-        internal float Estimate(Sample sample)
+    public class Perceptron
+    {
+        public float[] W { get; set; } = new float[1];
+
+        public int Length => W.Length - 1;
+
+        public float Estimate(Sample sample)
         {
-            if (sample.X.Length != Length)
+            if (sample.Length != Length)
             {
                 throw new ArgumentException("Wrong Sample length");
             }
 
-            float wx = sample.X.Zip(W.Skip(1), (x, w) => w * x).Sum() + W[0];
+            float wx = W[0];
+            for (var i = 0; i < Length; i++)
+            {
+                wx += sample.X[i] * W[i + 1];
+            }
             float e = F(wx);
             return e;
         }
 
-        internal IEnumerable<float> Train(DataSet ds, float iterations = 100, float learningRate = 0.1f)
+        public IEnumerable<float> Train(IEnumerable<SampleWithClass> ds, PerceptronTrainParameters parameters)
         {
-            W = new float[ds.Length + 1];
+            W = new float[ds.First().Length + 1];
 
             // initial W
             {
@@ -35,20 +46,20 @@ namespace L1
 
             // train
             var errors = new List<float>();
-            for (int i = 0; i < iterations; i++)
+            for (int i = 0; i < parameters.Iterations; i++)
             {
                 float err = 0;
 
-                foreach(var s in ds.Set)
+                foreach(var s in ds)
                 {
                     var y = Estimate(s);
                     var d = s.D;
                     var delta = d - y;
-                    var deltaW = delta * learningRate;
+                    var deltaW = delta * parameters.LearningRate;
 
                     UpdateW(deltaW, s);
 
-                    err += MathF.Pow(delta, 2);
+                    err += MathF.Pow(delta, 2) / 2;
                 }
 
                 errors.Add(err);
@@ -61,17 +72,17 @@ namespace L1
 
         float F(float wx)
         {
-            return wx >= 0 ? 1 : -1;
+            return wx > 0 ? 1 : 0;
         }
 
         void UpdateW(float deltaW, Sample sample)
         {
             Debug.Assert(sample.Length == Length);
 
-            W[0] = deltaW;
-            for (var i = 1; i < W.Length; i++)
+            W[0] += deltaW;
+            for (var i = 0; i < Length; i++)
             {
-                W[i] += deltaW * sample.X[i];
+                W[i + 1] += deltaW * sample.X[i];
             }
         }
 
