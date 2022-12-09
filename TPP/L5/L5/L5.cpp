@@ -48,8 +48,8 @@ int main()
     std::cout << "PP. Lab 5" << std::endl;
 
     // generate huge data
-    //std::cout << "Generate data." << std::endl;
-    //GenerateKeys();
+    std::cout << "Generate data." << std::endl;
+    GenerateKeys();
 
     // read dictionary
     std::cout << "Load keys dictionary" << std::endl;
