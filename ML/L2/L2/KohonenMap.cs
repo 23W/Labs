@@ -87,6 +87,21 @@ namespace L2
                 return total;
             }
 
+            public double DistanceTo(Node node)
+            {
+                Debug.Assert(node.Length == Length);
+
+                double total = 0;
+
+                for (int i = 0; i < Length; i++)
+                {
+                    var difference = W[i] - node.W[i];
+                    total += difference * difference;
+                }
+
+                return total;
+            }
+
             public double CoordinateDistance(Node node)
             {
                 int differenceInX = X - node.X;

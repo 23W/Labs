@@ -101,7 +101,7 @@ namespace L2
             // Test
             var testResult = Map.Test(TrainDataSet.Set, TestDataSet.Set);
 
-            // Draw result
+            // Draw result (W-maps)
             {
                 var tableW = 3;
                 var tableH = (int)Math.Ceiling((Map.Depth + 1) / (float)tableW);
@@ -318,6 +318,107 @@ namespace L2
                     plotView.Model = model;
                 }
             }
+
+            // Draw result (U-map)
+            {
+                var model = new PlotModel() { Title = "U-Map" };
+
+                var colorAxis = new LinearColorAxis()
+                {
+                    Position = AxisPosition.Right,
+                    Palette = OxyPalette.Interpolate(500, OxyColors.White, OxyColors.Black),
+                    IsAxisVisible = true,
+                };
+
+                model.Axes.Add(colorAxis);
+
+                var data = new double[Map.Width, Map.Height];
+                for (var x = 0; x < Map.Width; x++)
+                {
+                    for (var y = 0; y < Map.Height; y++)
+                    {
+                        var u = 0.0;
+                        var uCount = 0;
+                        for (var i = x - 1; i <= x + 1; i++)
+                        {
+                            for (var j = y - 1; j <= y + 1; j++)
+                            {
+                                var isCalcValid = (i != x && j != y) &&
+                                                  (i >= 0 && i < Map.Width) &&
+                                                  (j >= 0 && j < Map.Height);
+                                if (isCalcValid)
+                                {
+                                    u += Math.Sqrt(Map[x, y].DistanceTo(Map[i, j]));
+                                    uCount++;
+                                }
+                            }
+                        }
+
+                        u /= uCount;
+                        data[x, y] = u;
+                    }
+                }
+
+                var series = new HeatMapSeries()
+                {
+                    CoordinateDefinition = HeatMapCoordinateDefinition.Center,
+                    X0 = 1.0,
+                    X1 = Map.Width + 0.0,
+                    Y0 = 1.0,
+                    Y1 = Map.Height + 0.0,
+                    Data = data,
+                    Interpolate = false,
+                };
+                model.Series.Add(series);
+
+                // annotations
+                {
+                    for (var x = 0; x < Map.Width; x++)
+                    {
+                        var annotation = new LineAnnotation()
+                        {
+                            Type = LineAnnotationType.Vertical,
+                            X = x + 0.5,
+                            Layer = AnnotationLayer.AboveSeries,
+                        };
+                        model.Annotations.Add(annotation);
+                    }
+
+                    for (var y = 0; y < Map.Height; y++)
+                    {
+                        var annotation = new LineAnnotation()
+                        {
+                            Type = LineAnnotationType.Horizontal,
+                            Y = y + 0.5,
+                            Layer = AnnotationLayer.AboveSeries,
+                        };
+                        model.Annotations.Add(annotation);
+                    }
+
+                    for (var x = 0; x < Map.Width; x++)
+                    {
+                        for (var y = 0; y < Map.Height; y++)
+                        {
+                            var node = Map[x, y];
+                            if (node.Classes.Any())
+                            {
+                                var ptAnnotation = new PointAnnotation()
+                                {
+                                    X = x + 1,
+                                    Y = y + 1,
+                                    Shape = MapClassMarkes[node.MostUsedClass % MapClassMarkes.Length],
+                                    Fill = OxyColors.WhiteSmoke,
+                                    Stroke = OxyColors.Black,
+                                    StrokeThickness = 1,
+                                };
+                                model.Annotations.Add(ptAnnotation);
+                            }
+                        }
+                    }
+                }
+
+                m_uMapPlotView.Model = model;
+            }
         }
 
         private void OnLoad(object sender, EventArgs e)
@@ -326,6 +427,14 @@ namespace L2
             m_learningRateTextBox.DataBindings.Add("Text", this, $"{nameof(TrainParameters)}.{nameof(TrainParameters.LearningRate)}");
             m_gridWidthTextBox.DataBindings.Add("Text", this, $"{nameof(SOMWidth)}");
             m_gridHeightTextBox.DataBindings.Add("Text", this, $"{nameof(SOMHeight)}");
+        }
+
+        private void OnViewStyleChanged(object sender, EventArgs e)
+        {
+            bool isUMap = m_uMapCheckBox.Checked;
+
+            m_uMapPlotView.Visible = isUMap;
+            m_tableLayoutPanel.Visible = !isUMap;
         }
     }
 }
