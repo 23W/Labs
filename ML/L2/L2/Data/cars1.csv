@@ -23,8 +23,6 @@ Audi,RS 6 4dr,Sports,Europe,Front,"$84,600","$76,417",4.2,8,450,15,22,4024,109,1
 Audi,TT 1.8 convertible 2dr (coupe),Sports,Europe,Front,"$35,940","$32,512",1.8,4,180,20,28,3131,95,159
 Audi,TT 1.8 Quattro 2dr (convertible),Sports,Europe,All,"$37,390","$33,891",1.8,4,225,20,28,2921,96,159
 Audi,TT 3.2 coupe 2dr (convertible),Sports,Europe,All,"$40,590","$36,739",3.2,6,250,21,29,3351,96,159
-Audi,A6 3.0 Avant Quattro,Wagon,Europe,All,"$40,840","$37,060",3,6,220,18,25,4035,109,192
-Audi,S4 Avant Quattro,Wagon,Europe,All,"$49,090","$44,446",4.2,8,340,15,21,3936,104,179
 BMW,X3 3.0i,SUV,Europe,All,"$37,000","$33,873",3,6,225,16,23,4023,110,180
 BMW,X5 4.4i,SUV,Europe,All,"$52,195","$47,720",4.4,8,325,16,22,4824,111,184
 BMW,325i 4dr,Sedan,Europe,Rear,"$28,495","$26,155",2.5,6,184,20,29,3219,107,176
@@ -44,7 +42,6 @@ BMW,M3 coupe 2dr,Sports,Europe,Rear,"$48,195","$44,170",3.2,6,333,16,24,3415,108
 BMW,M3 convertible 2dr,Sports,Europe,Rear,"$56,595","$51,815",3.2,6,333,16,23,3781,108,177
 BMW,Z4 convertible 2.5i 2dr,Sports,Europe,Rear,"$33,895","$31,065",2.5,6,184,20,28,2932,98,161
 BMW,Z4 convertible 3.0i 2dr,Sports,Europe,Rear,"$41,045","$37,575",3,6,225,21,29,2998,98,161
-BMW,325xi Sport,Wagon,Europe,All,"$32,845","$30,110",2.5,6,184,19,26,3594,107,176
 Buick,Rainier,SUV,USA,All,"$37,895","$34,357",4.2,6,275,15,21,4600,113,193
 Buick,Rendezvous CX,SUV,USA,Front,"$26,545","$24,085",3.4,6,185,19,26,4024,112,187
 Buick,Century Custom 4dr,Sedan,USA,Front,"$22,180","$20,351",3.1,6,175,20,30,3353,109,195
@@ -88,7 +85,6 @@ Chevrolet,Colorado Z85,Truck,USA,All,"$18,760","$17,070",2.8,4,175,18,23,3623,11
 Chevrolet,Silverado 1500 Regular Cab,Truck,USA,Rear,"$20,310","$18,480",4.3,6,200,15,21,4142,119,206
 Chevrolet,Silverado SS,Truck,USA,All,"$40,340","$35,399",6,8,300,13,17,4804,144,238
 Chevrolet,SSR,Truck,USA,Rear,"$41,995","$39,306",5.3,8,300,16,19,4760,116,191
-Chevrolet,Malibu Maxx LS,Wagon,USA,Front,"$22,225","$20,394",3.5,6,200,22,30,3458,112,188
 Chrysler,PT Cruiser 4dr,Sedan,USA,Front,"$17,985","$16,919",2.4,4,150,22,29,3101,103,169
 Chrysler,PT Cruiser Limited 4dr,Sedan,USA,Front,"$22,000","$20,573",2.4,4,150,22,29,3105,103,169
 Chrysler,Sebring 4dr,Sedan,USA,Front,"$19,090","$17,805",2.4,4,150,22,30,3173,108,191
@@ -103,7 +99,6 @@ Chrysler,Sebring Limited convertible 2dr,Sedan,USA,Front,"$30,950","$28,613",2.7
 Chrysler,Town and Country LX,Sedan,USA,Front,"$27,490","$25,371",3.3,6,180,19,26,4068,119,201
 Chrysler,Town and Country Limited,Sedan,USA,Front,"$38,380","$35,063",3.8,6,215,18,25,4331,119,201
 Chrysler,Crossfire 2dr,Sports,USA,Rear,"$34,495","$32,033",3.2,6,215,17,25,3060,95,160
-Chrysler,Pacifica,Wagon,USA,Rear,"$31,230","$28,725",3.5,6,250,17,23,4675,116,199
 Dodge,Durango SLT,SUV,USA,All,"$32,235","$29,472",4.7,8,230,15,21,4987,119,201
 Dodge,Neon SE 4dr,Sedan,USA,Front,"$13,670","$12,849",2,4,132,29,36,2581,105,174
 Dodge,Neon SXT 4dr,Sedan,USA,Front,"$15,040","$14,086",2,4,132,29,36,2626,105,174
@@ -138,8 +133,6 @@ Ford,Thunderbird Deluxe convert w/hardtop 2d,Sports,USA,Front,"$37,530","$34,483
 Ford,F-150 Regular Cab XL,Truck,USA,Rear,"$22,010","$19,490",4.6,8,231,15,19,4788,126,211
 Ford,F-150 Supercab Lariat,Truck,USA,All,"$33,540","$29,405",5.4,8,300,14,18,5464,133,218
 Ford,Ranger 2.3 XL Regular Cab,Truck,USA,Rear,"$14,385","$13,717",2.3,4,143,24,29,3028,111,188
-Ford,Focus ZTW,Wagon,USA,Front,"$17,475","$16,375",2,4,130,26,33,2702,103,178
-Ford,Taurus SE,Wagon,USA,Front,"$22,290","$20,457",3,6,155,19,26,3497,109,198
 GMC,Envoy XUV SLE,SUV,USA,Front,"$31,890","$28,922",4.2,6,275,15,19,4945,129,208
 GMC,Yukon 1500 SLE,SUV,USA,Front,"$35,725","$31,361",4.8,8,285,16,19,5042,116,199
 GMC,Yukon XL 2500 SLT,SUV,USA,All,"$46,265","$40,534",6,8,325,13,17,6133,130,219
@@ -182,8 +175,6 @@ Infiniti,G35 4dr,Sedan,Asia,All,"$32,445","$29,783",3.5,6,260,18,26,3677,112,187
 Infiniti,I35 4dr,Sedan,Asia,Front,"$31,145","$28,320",3.5,6,255,19,26,3306,108,194
 Infiniti,M45 4dr,Sedan,Asia,Rear,"$42,845","$38,792",4.5,8,340,17,23,3851,110,197
 Infiniti,Q45 Luxury 4dr,Sedan,Asia,Rear,"$52,545","$47,575",4.5,8,340,17,23,3977,113,200
-Infiniti,FX35,Wagon,Asia,Rear,"$34,895","$31,756",3.5,6,280,16,22,4056,112,189
-Infiniti,FX45,Wagon,Asia,All,"$36,395","$33,121",4.5,8,315,15,19,4309,112,189
 Isuzu,Ascender S,SUV,Asia,All,"$31,849","$29,977",4.2,6,275,15,20,4967,129,208
 Isuzu,Rodeo S,SUV,Asia,Front,"$20,449","$19,261",3.2,6,193,17,21,3836,106,178
 Jaguar,X-Type 2.5 4dr,Sedan,Europe,All,"$29,995","$27,355",2.5,6,192,18,26,3428,107,184
@@ -211,7 +202,6 @@ Kia,Spectra GSX 4dr hatch,Sedan,Asia,Front,"$14,630","$13,790",1.8,4,124,24,32,2
 Kia,Optima LX V6 4dr,Sedan,Asia,Front,"$18,435","$16,850",2.7,6,170,20,27,3279,106,186
 Kia,Amanti 4dr,Sedan,Asia,Front,"$26,000","$23,764",3.5,6,195,17,25,4021,110,196
 Kia,Sedona LX,Sedan,Asia,Front,"$20,615","$19,400",3.5,6,195,16,22,4802,115,194
-Kia,Rio Cinco,Wagon,Asia,Front,"$11,905","$11,410",1.6,4,104,26,33,2447,95,167
 Land Rover,Range Rover HSE,SUV,Europe,All,"$72,250","$65,807",4.4,8,282,12,16,5379,113,195
 Land Rover,Discovery SE,SUV,Europe,All,"$39,250","$35,777",4.6,8,217,12,16,4576,100,185
 Land Rover,Freelander SE,SUV,Europe,All,"$25,995","$23,969",2.5,6,174,18,21,3577,101,175
@@ -225,7 +215,6 @@ Lexus,GS 300 4dr,Sedan,Asia,Rear,"$41,010","$36,196",3,6,220,18,25,3649,110,189
 Lexus,GS 430 4dr,Sedan,Asia,Rear,"$48,450","$42,232",4.3,8,300,18,23,3715,110,189
 Lexus,LS 430 4dr,Sedan,Asia,Rear,"$55,750","$48,583",4.3,8,290,18,25,3990,115,197
 Lexus,SC 430 convertible 2dr,Sports,Asia,Rear,"$63,200","$55,063",4.3,8,300,18,23,3840,103,178
-Lexus,IS 300 SportCross,Wagon,Asia,Rear,"$32,455","$28,647",3,6,215,18,24,3410,105,177
 Lincoln,Navigator Luxury,SUV,USA,All,"$52,775","$46,360",5.4,8,300,13,18,5969,119,206
 Lincoln,Aviator Ultimate,SUV,USA,Front,"$42,915","$39,443",4.6,8,302,13,18,4834,114,193
 Lincoln,LS V6 Luxury 4dr,Sedan,USA,Rear,"$32,495","$29,969",3,6,232,20,26,3681,115,194
@@ -269,9 +258,6 @@ Mercedes-Benz,SL55 AMG 2dr,Sports,Europe,Rear,"$121,770","$113,388",5.5,8,493,14
 Mercedes-Benz,SL600 convertible 2dr,Sports,Europe,Rear,"$126,670","$117,854",5.5,12,493,13,19,4429,101,179
 Mercedes-Benz,SLK230 convertible 2dr,Sports,Europe,Rear,"$40,320","$37,548",2.3,4,192,21,29,3055,95,158
 Mercedes-Benz,SLK32 AMG 2dr,Sports,Europe,Rear,"$56,170","$52,289",3.2,6,349,17,22,3220,95,158
-Mercedes-Benz,C240,Wagon,Europe,Rear,"$33,780","$31,466",2.6,6,168,19,25,3470,107,179
-Mercedes-Benz,E320,Wagon,Europe,Rear,"$50,670","$47,174",3.2,6,221,19,27,3966,112,190
-Mercedes-Benz,E500,Wagon,Europe,All,"$60,670","$56,474",5,8,302,16,24,4230,112,190
 Mercury,Mountaineer,SUV,USA,Front,"$29,995","$27,317",4,6,210,16,21,4374,114,190
 Mercury,Sable GS 4dr,Sedan,USA,Front,"$21,595","$19,848",3,6,155,20,27,3308,109,200
 Mercury,Grand Marquis GS 4dr,Sedan,USA,Rear,"$24,695","$23,217",4.6,8,224,17,25,4052,115,212
@@ -280,7 +266,6 @@ Mercury,Sable LS Premium 4dr,Sedan,USA,Front,"$23,895","$21,918",3,6,201,19,26,3
 Mercury,Grand Marquis LS Ultimate 4dr,Sedan,USA,Rear,"$30,895","$28,318",4.6,8,224,17,25,4052,115,212
 Mercury,Marauder 4dr,Sedan,USA,Rear,"$34,495","$31,558",4.6,8,302,17,23,4195,115,212
 Mercury,Monterey Luxury,Sedan,USA,Front,"$33,995","$30,846",4.2,6,201,16,23,4340,121,202
-Mercury,Sable GS,Wagon,USA,Front,"$22,595","$20,748",3,6,155,19,26,3488,109,198
 Mitsubishi,Endeavor XLS,SUV,Asia,All,"$30,492","$28,330",3.8,6,215,17,21,4134,109,190
 Mitsubishi,Montero XLS,SUV,Asia,All,"$33,112","$30,763",3.8,6,215,15,19,4718,110,190
 Mitsubishi,Outlander LS,SUV,Asia,Front,"$18,892","$17,569",2.4,4,160,21,27,3240,103,179
@@ -293,7 +278,6 @@ Mitsubishi,Galant GTS 4dr,Sedan,Asia,Front,"$25,700","$23,883",3.8,6,230,18,26,3
 Mitsubishi,Eclipse GTS 2dr,Sports,Asia,Front,"$25,092","$23,456",3,6,210,21,28,3241,101,177
 Mitsubishi,Eclipse Spyder GT convertible 2dr,Sports,Asia,Front,"$26,992","$25,218",3,6,210,21,28,3296,101,177
 Mitsubishi,Lancer Evolution 4dr,Sports,Asia,Front,"$29,562","$27,466",2,4,271,18,26,3263,103,179
-Mitsubishi,Lancer Sportback LS,Wagon,Asia,Front,"$17,495","$16,295",2.4,4,160,25,31,3020,102,181
 Nissan,Pathfinder Armada SE,SUV,Asia,Front,"$33,840","$30,815",5.6,8,305,13,19,5013,123,207
 Nissan,Pathfinder SE,SUV,Asia,Front,"$27,339","$25,972",3.5,6,240,16,21,3871,106,183
 Nissan,Xterra XE V6,SUV,Asia,Front,"$20,939","$19,512",3.3,6,180,17,20,3760,104,178
@@ -310,7 +294,6 @@ Nissan,350Z coupe 2dr,Sports,Asia,Rear,"$26,910","$25,203",3.5,6,287,20,26,3188,
 Nissan,350Z Enthusiast convertible 2dr,Sports,Asia,Rear,"$34,390","$31,845",3.5,6,287,20,26,3428,104,169
 Nissan,Frontier King Cab XE V6,Truck,Asia,All,"$19,479","$18,253",3.3,6,180,17,20,3932,116,191
 Nissan,Titan King Cab XE,Truck,Asia,All,"$26,650","$24,926",5.6,8,305,14,18,5287,140,224
-Nissan,Murano SL,Wagon,Asia,Rear,"$28,739","$27,300",3.5,6,245,20,25,3801,111,188
 Oldsmobile,Alero GX 2dr,Sedan,USA,Front,"$18,825","$17,642",2.2,4,140,24,32,2946,107,187
 Oldsmobile,Alero GLS 2dr,Sedan,USA,Front,"$23,675","$21,485",3.4,6,170,20,29,3085,107,187
 Oldsmobile,Silhouette GL,Sedan,USA,Front,"$28,790","$26,120",3.4,6,185,19,26,3948,120,201
@@ -324,7 +307,6 @@ Pontiac,Bonneville GXP 4dr,Sedan,USA,Front,"$35,995","$32,997",4.6,8,275,17,20,3
 Pontiac,Montana,Sedan,USA,Front,"$23,845","$21,644",3.4,6,185,19,26,3803,112,187
 Pontiac,Montana EWB,Sedan,USA,All,"$31,370","$28,454",3.4,6,185,18,24,4431,121,201
 Pontiac,GTO 2dr,Sports,USA,Rear,"$33,500","$30,710",5.7,8,340,16,20,3725,110,190
-Pontiac,Vibe,Wagon,USA,Rear,"$17,045","$15,973",1.8,4,130,29,36,2701,102,172
 Porsche,Cayenne S,SUV,Europe,All,"$56,665","$49,865",4.5,8,340,14,18,4950,112,188
 Porsche,911 Carrera convertible 2dr (coupe),Sports,Europe,Rear,"$79,165","$69,229",3.6,6,315,18,26,3135,93,175
 Porsche,911 Carrera 4S coupe 2dr (convert),Sports,Europe,All,"$84,165","$72,206",3.6,6,315,17,24,3240,93,175
@@ -338,7 +320,6 @@ Saab,9-5 Arc 4dr,Sedan,Europe,Front,"$35,105","$33,011",2.3,4,220,21,29,3470,106
 Saab,9-5 Aero 4dr,Sedan,Europe,Front,"$39,465","$37,721",2.3,4,250,21,29,3470,106,190
 Saab,9-3 Arc convertible 2dr,Sedan,Europe,Front,"$40,670","$38,520",2,4,210,21,29,3480,105,182
 Saab,9-3 Aero convertible 2dr,Sedan,Europe,Front,"$43,175","$40,883",2,4,210,21,30,3700,105,182
-Saab,9-5 Aero,Wagon,Europe,Front,"$40,845","$38,376",2.3,4,250,19,29,3620,106,190
 Saturn,VUE,SUV,USA,All,"$20,585","$19,238",2.2,4,143,21,26,3381,107,181
 Saturn,Ion1 4dr,Sedan,USA,Front,"$10,995","$10,319",2.2,4,140,26,35,2692,103,185
 Saturn,lon2 4dr,Sedan,USA,Front,"$14,300","$13,393",2.2,4,140,26,35,2692,103,185
@@ -346,9 +327,7 @@ Saturn,lon3 4dr,Sedan,USA,Front,"$15,825","$14,811",2.2,4,140,26,35,2692,103,185
 Saturn,lon2 quad coupe 2dr,Sedan,USA,Front,"$14,850","$13,904",2.2,4,140,26,35,2751,103,185
 Saturn,lon3 quad coupe 2dr,Sedan,USA,Front,"$16,350","$15,299",2.2,4,140,26,35,2751,103,185
 Saturn,L300-2 4dr,Sedan,USA,Front,"$21,410","$19,801",3,6,182,20,28,3197,107,190
-Saturn,L300 2,Wagon,USA,Front,"$23,560","$21,779",2.2,4,140,24,34,3109,107,190
 Scion,xA 4dr hatch,Sedan,Asia,Front,"$12,965","$12,340",1.5,4,108,32,38,2340,93,154
-Scion,xB,Wagon,Asia,Front,"$14,165","$13,480",1.5,4,108,31,35,2425,98,155
 Subaru,Impreza 2.5 RS 4dr,Sedan,Asia,All,"$19,945","$18,399",2.5,4,165,22,28,2965,99,174
 Subaru,Legacy L 4dr,Sedan,Asia,All,"$20,445","$18,713",2.5,4,165,21,28,3285,104,184
 Subaru,Legacy GT 4dr,Sedan,Asia,All,"$25,645","$23,336",2.5,4,165,21,28,3395,104,184
@@ -358,8 +337,6 @@ Subaru,Outback H-6 VDC 4dr,Sedan,Asia,All,"$31,545","$28,603",3,6,212,19,26,3630
 Subaru,Impreza WRX 4dr,Sports,Asia,All,"$25,045","$23,022",2,4,227,20,27,3085,99,174
 Subaru,Impreza WRX STi 4dr,Sports,Asia,All,"$31,545","$29,130",2.5,4,300,18,24,3263,100,174
 Subaru,Baja,Truck,Asia,All,"$24,520","$22,304",2.5,4,165,21,28,3485,104,193
-Subaru,Forester X,Wagon,Asia,All,"$21,445","$19,646",2.5,4,165,21,28,3090,99,175
-Subaru,Outback,Wagon,Asia,All,"$23,895","$21,773",2.5,4,165,21,28,3430,104,187
 Suzuki,XL-7 EX,SUV,Asia,Front,"$23,699","$22,307",2.7,6,185,18,22,3682,110,187
 Suzuki,Vitara LX,SUV,Asia,All,"$17,163","$16,949",2.5,6,165,19,22,3020,98,163
 Suzuki,Aeno S 4dr,Sedan,Asia,Front,"$12,884","$12,719",2.3,4,155,25,31,2676,98,171
@@ -367,7 +344,6 @@ Suzuki,Aerio LX 4dr,Sedan,Asia,Front,"$14,500","$14,317",2.3,4,155,25,31,2676,98
 Suzuki,Forenza S 4dr,Sedan,Asia,Front,"$12,269","$12,116",2,4,119,24,31,2701,102,177
 Suzuki,Forenza EX 4dr,Sedan,Asia,Front,"$15,568","$15,378",2,4,119,22,30,2756,102,177
 Suzuki,Verona LX 4dr,Sedan,Asia,Front,"$17,262","$17,053",2.5,6,155,20,27,3380,106,188
-Suzuki,Aerio SX,Wagon,Asia,All,"$16,497","$16,291",2.3,4,155,24,29,2932,98,167
 Toyota,Sequoia SR5,SUV,Asia,All,"$35,695","$31,827",4.7,8,240,14,17,5270,118,204
 Toyota,4Runner SR5 V6,SUV,Asia,Front,"$27,710","$24,801",4,6,245,18,21,4035,110,189
 Toyota,Highlander V6,SUV,Asia,All,"$27,930","$24,915",3.3,6,230,18,24,3935,107,185
@@ -394,7 +370,6 @@ Toyota,MR2 Spyder convertible 2dr,Sports,Asia,Rear,"$25,130","$22,787",1.8,4,138
 Toyota,Tacoma,Truck,Asia,Rear,"$12,800","$11,879",2.4,4,142,22,27,2750,103,191
 Toyota,Tundra Regular Cab V6,Truck,Asia,Rear,"$16,495","$14,978",3.4,6,190,16,18,3925,128,218
 Toyota,Tundra Access Cab V6 SR5,Truck,Asia,All,"$25,935","$23,520",3.4,6,190,14,17,4435,128,218
-Toyota,Matrix XR,Wagon,Asia,Front,"$16,695","$15,156",1.8,4,130,29,36,2679,102,171
 Volkswagen,Touareg V6,SUV,Europe,All,"$35,515","$32,243",3.2,6,220,15,20,5086,112,187
 Volkswagen,Golf GLS 4dr,Sedan,Europe,Front,"$18,715","$17,478",2,4,115,24,31,2897,99,165
 Volkswagen,GTI 1.8T 2dr hatch,Sedan,Europe,Front,"$19,825","$18,109",1.8,4,180,24,31,2934,99,168
@@ -407,9 +382,6 @@ Volkswagen,Passat GLX V6 4MOTION 4dr,Sedan,Europe,Front,"$33,180","$30,583",2.8,
 Volkswagen,Passat W8 4MOTION 4dr,Sedan,Europe,Front,"$39,235","$36,052",4,8,270,18,25,3953,106,185
 Volkswagen,Phaeton 4dr,Sedan,Europe,Front,"$65,000","$59,912",4.2,8,335,16,22,5194,118,204
 Volkswagen,Phaeton W12 4dr,Sedan,Europe,Front,"$75,000","$69,130",6,12,420,12,19,5399,118,204
-Volkswagen,Jetta GL,Wagon,Europe,Front,"$19,005","$17,427",2,4,115,24,30,3034,99,174
-Volkswagen,Passat GLS 1.8T,Wagon,Europe,Front,"$24,955","$22,801",1.8,4,170,22,31,3338,106,184
-Volkswagen,Passat W8,Wagon,Europe,Front,"$40,235","$36,956",4,8,270,18,25,4067,106,184
 Volvo,XC90 T6,SUV,Europe,All,"$41,250","$38,851",2.9,6,268,15,20,4638,113,189
 Volvo,S40 4dr,Sedan,Europe,Front,"$25,135","$23,701",1.9,4,170,22,29,2767,101,178
 Volvo,S60 2.5 4dr,Sedan,Europe,All,"$31,745","$29,916",2.5,5,208,20,27,3903,107,180
@@ -420,5 +392,3 @@ Volvo,S80 2.5T 4dr,Sedan,Europe,All,"$37,885","$35,688",2.5,5,194,20,27,3691,110
 Volvo,C70 LPT convertible 2dr,Sedan,Europe,Front,"$40,565","$38,203",2.4,5,197,21,28,3450,105,186
 Volvo,C70 HPT convertible 2dr,Sedan,Europe,Front,"$42,565","$40,083",2.3,5,242,20,26,3450,105,186
 Volvo,S80 T6 4dr,Sedan,Europe,Front,"$45,210","$42,573",2.9,6,268,19,26,3653,110,190
-Volvo,V40,Wagon,Europe,Front,"$26,135","$24,641",1.9,4,170,22,29,2822,101,180
-Volvo,XC70,Wagon,Europe,All,"$35,145","$33,112",2.5,5,208,20,27,3823,109,186
