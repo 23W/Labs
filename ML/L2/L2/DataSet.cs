@@ -8,7 +8,7 @@ namespace L2
 {
     public class Sample
     {
-        public float[] X { get; set; } = new float[0];
+        public double[] X { get; set; } = new double[0];
 
         public int Length => X.Length;
     }
@@ -27,7 +27,7 @@ namespace L2
     {
         public IEnumerable<T> Set => m_set;
 
-        public int Length => Set.Any() ? Set.First().Length : 0;
+        public int Depth => Set.Any() ? Set.First().Length : 0;
 
         #region Methods
 
@@ -46,9 +46,17 @@ namespace L2
             Add(new T() { X = sample.X, D = dClass });
         }
 
-        public void Add(float[] sample, int dClass)
+        public void Add(double[] sample, int dClass)
         {
             Add(new T() { X = sample, D = dClass });
+        }
+
+        public void AddRange(IEnumerable<T> samples)
+        {
+            foreach(var sample in samples)
+            {
+                Add(sample);
+            }
         }
 
         public void Clear()
@@ -67,6 +75,30 @@ namespace L2
                 var temp = m_set[j];
                 m_set[j] = m_set[i];
                 m_set[i] = temp;
+            }
+        }
+
+        public void Normalize()
+        {
+            for (var z = 0; z < Depth; z++)
+            {
+                var min = double.MaxValue;
+                var max = double.MinValue;
+
+                foreach (var sample in Set)
+                {
+                    min = Math.Min(min, sample.X[z]);
+                    max = Math.Max(max, sample.X[z]);
+                }
+
+                var mean = (max + min) / 2;
+                var length = (max - min);
+
+                foreach (var sample in Set)
+                {
+                    var x = sample.X[z];
+                    sample.X[z] = (x - mean) / length;
+                }
             }
         }
 

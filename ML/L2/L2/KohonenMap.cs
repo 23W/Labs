@@ -13,14 +13,9 @@ namespace L2
     {
         public int Iterations { get; set; } = 100;
 
-        public float LearningRate { get; set; } = 0.1f;
+        public double LearningRate { get; set; } = 0.02;
 
         public Random Random { get; set; } = new Random();
-    }
-
-    public class KohonenMapTrainResult
-    {
-        public IEnumerable<float> Errors { get; set; } = Enumerable.Empty<float>();
     }
 
     public class KohonenMap
@@ -31,9 +26,9 @@ namespace L2
         {
             #region Properties
 
-            public float[] W { get; init; } = new float[1];
+            public double[] W { get; init; } = new double[1];
 
-            public int Length => W.Length - 1;
+            public int Length => W.Length;
 
             public int X { get; init; } = 0;
 
@@ -47,7 +42,7 @@ namespace L2
 
             public int TotalClassCount => GetTotalClassCount();
 
-            public float Variance => GetClassVariance();
+            public double Variance => GetClassVariance();
 
             #endregion
 
@@ -55,7 +50,7 @@ namespace L2
 
             public Node(int x, int y, int depth)
             {
-                W = new float[depth];
+                W = new double[depth];
                 Array.Fill(W, 0);
 
                 X = x;
@@ -66,11 +61,11 @@ namespace L2
 
             #region Methods
 
-            public float DistanceTo(Sample sample)
+            public double DistanceTo(Sample sample)
             {
                 Debug.Assert(sample.Length == Length);
 
-                float total = 0;
+                double total = 0;
 
                 for (int i = 0; i < Length; i++)
                 {
@@ -81,7 +76,7 @@ namespace L2
                 return total;
             }
 
-            public float CoordinateDistance(Node node)
+            public double CoordinateDistance(Node node)
             {
                 int differenceInX = X - node.X;
                 int differenceInY = Y - node.Y;
@@ -89,15 +84,16 @@ namespace L2
                 return (differenceInX * differenceInX) + (differenceInY * differenceInY);
             }
 
-            internal void UpdateWeights(Sample sample, float learningRate, float distanceFalloff)
+            internal void UpdateWeights(Sample sample, double learningRate, double distanceFalloff)
             {
                 Debug.Assert(sample.Length == Length);
 
-                float learningRateTimesDistanceFalloff = learningRate * distanceFalloff;
+                double learningRateTimesDistanceFalloff = learningRate * distanceFalloff;
 
                 for (int index = 0; index < Length; index++)
                 {
-                    W[index] += (learningRateTimesDistanceFalloff * (sample.X[index] - W[index]));
+                    var w = W[index];
+                    W[index] = w + (learningRateTimesDistanceFalloff * (sample.X[index] - w));
                 }
             }
 
@@ -132,9 +128,9 @@ namespace L2
                 return total;
             }
 
-            float GetClassVariance()
+            double GetClassVariance()
             {
-                var res = 0.0f;
+                var res = 0.0;
 
                 if (Classes.Count > 1)
                 {
@@ -156,36 +152,35 @@ namespace L2
 
         #region Properties
 
-        public Node[,] Grid { get; init; } = new Node[0, 0];
+        public Node[,] Grid { get; private set; } = new Node[0, 0];
 
         public int Width => Grid.GetLength(0);
 
         public int Height => Grid.GetLength(1);
 
         public int Depth => ((Width > 0) && (Height > 0)) ? Grid[0, 0].Length : 0;
+        public double MaxW {get; private set; }
+        public double MinW {get; private set; }
 
         public Node this[int x, int y] => Grid[x, y];
 
         #endregion
 
-        #region Construction
+        #region Methods
 
-        public KohonenMap(int width, int height, int depth)
+        public void Init(int width, int height, int depth)
         {
             Grid = new Node[width, height];
 
-            for (var j = 0; j < height; j++)
+            for (var i = 0; i < width; i++)
             {
-                for (var i = 0; i < width; i++)
+                for (var j = 0; j < height; j++)
                 {
                     Grid[i, j] = new Node(i, j, depth);
                 }
             }
         }
 
-        #endregion
-
-        #region Methods
         public Node Estimate(Sample sample)
         {
             if (sample.Length != Depth)
@@ -197,24 +192,56 @@ namespace L2
             return node;
         }
 
-        public KohonenMapTrainResult Train(IEnumerable<SampleWithClass> ds, KohonenMapTrainParameters parameters)
+        public Sample EstimateSample(IEnumerable<Sample> samples, int x, int y)
         {
-            if (ds == null)
-            {
-                throw new ArgumentNullException(nameof(ds));
-            }
-            else if (!ds.Any())
+            var node = Grid[x, y];
+            var sample = FindBestMatchingSample(samples, node);
+            return sample;
+        }
+
+        public void Train(IEnumerable<SampleWithClass> ds, KohonenMapTrainParameters parameters)
+        {
+            if (!ds.Any())
             {
                 throw new ArgumentException(nameof(ds));
             }
 
-            var res = new KohonenMapTrainResult();
-
             InitializeWeights(ds, parameters.Random);
             TrainWeights(ds, parameters.Iterations, parameters.LearningRate);
             ClassifyNodes(ds);
+        }
 
-            return res;
+        public double Test(IEnumerable<SampleWithClass> trainSet, IEnumerable<SampleWithClassEstimation> testSet)
+        {
+            var errors = 0.0;
+            foreach (var test in testSet)
+            {
+                var node = FindBestMatchingNode(test);
+                var estimation = node.MostUsedClass;
+
+                if (!node.Classes.Any())
+                {
+                    var trainSample = FindBestMatchingSample(trainSet, node) as SampleWithClass;
+                    estimation = trainSample!.D;
+                }
+
+                test.E = estimation;
+                if (test.E != test.D)
+                {
+                    var errorValue = 1.0;
+                    if (node.Classes.ContainsKey(test.D) && node.Classes.ContainsKey(test.E))
+                    {
+                        var freq = node.Classes[test.D];
+                        var total = node.Classes[test.E];
+
+                        errorValue = 1 - ((double)freq / total);
+                    }
+
+                    errors += errorValue;
+                }
+            }
+
+            return errors;
         }
 
         #endregion
@@ -225,8 +252,8 @@ namespace L2
         {
             random ??= new Random();
 
-            float min = float.MaxValue;
-            float max = float.MinValue;
+            double min = double.MaxValue;
+            double max = double.MinValue;
 
             foreach (var sample in ds)
             {
@@ -237,34 +264,39 @@ namespace L2
                 }
             }
 
-            float spread = max - min;
+            double spread = max - min;
 
-            for (int j = 0; j < Height; j++)
+            for (int i = 0; i < Width; i++)
             {
-                for (int i = 0; i < Width; i++)
+                for (int j = 0; j < Height; j++)
                 {
+                    var node = Grid[i, j];
+
                     for (int z = 0; z < Depth; z++)
                     {
-                        var w = (float)((random!.NextDouble() * spread) + min);
-
-                        var node = Grid[i, j];
-
+                        var w = (double)((random!.NextDouble() * spread) + min);
                         node.W[z] = w;
-                        node.Classes.Clear();
                     }
                 }
             }
+
+            MaxW = max;
+            MinW = min;
         }
 
-        void TrainWeights(IEnumerable<SampleWithClass> ds, int trainingIterations, float startLearningRate)
+        IEnumerable<double> TrainWeights(IEnumerable<SampleWithClass> ds, int trainingIterations, double startLearningRate)
         {
-            var latticeRadius = MathF.Max(Width, Height) / 2;
-            var timeConstant = trainingIterations / MathF.Log(latticeRadius);
+            var errors = new List<double>();
+
+            var latticeRadius = Math.Max(Width, Height) / 2;
+            var timeConstant = trainingIterations / Math.Log(latticeRadius);
             var learningRate = startLearningRate;
 
             for (var iteration = 0; iteration < trainingIterations; iteration++)
             {
-                var neighborhoodRadius = latticeRadius * MathF.Exp(-iteration / timeConstant);
+                learningRate = startLearningRate * Math.Exp(-(double)iteration / trainingIterations);
+
+                var neighborhoodRadius = latticeRadius * Math.Exp(-iteration / timeConstant);
                 var neighborhoodDiameter = neighborhoodRadius * 2;
                 var neighborhoodRadiusSquared = neighborhoodRadius * neighborhoodRadius;
 
@@ -276,13 +308,22 @@ namespace L2
                                             neighborhoodRadiusSquared,
                                             learningRate);
                 }
-
-                learningRate = startLearningRate * MathF.Exp(-(float)iteration / trainingIterations);
             }
+
+            return errors;
         }
 
         void ClassifyNodes(IEnumerable<SampleWithClass> ds)
         {
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    var node = Grid[i, j];
+                    node.Classes.Clear();
+                }
+            }
+
             foreach (var sample in ds)
             {
                 var node = Estimate(sample);
@@ -298,8 +339,8 @@ namespace L2
             }
         }
 
-        void UpdateBestMatchingNodes(Sample trainingDataToMatch, float neighborhoodDiameter, float neighborhoodRadius,
-                                                                 float neighborhoodRadiusSquared, float learningRate)
+        void UpdateBestMatchingNodes(Sample trainingDataToMatch, double neighborhoodDiameter, double neighborhoodRadius,
+                                                                 double neighborhoodRadiusSquared, double learningRate)
         {
             Debug.Assert(trainingDataToMatch.Length == Depth);
 
@@ -319,10 +360,10 @@ namespace L2
                     var nodeToAdjust = Grid[i, j];
                     var distanceSquared = bestMatchingNode.CoordinateDistance(nodeToAdjust);
 
-                    // Perform a more fine-grained filter to only get the nodes within the neighborhood (circle).
+                    // Check neighborhood circle distance.
                     if (distanceSquared <= neighborhoodRadiusSquared)
                     {
-                        var distanceFalloff = MathF.Exp(-distanceSquared / (2 * neighborhoodRadiusSquared));
+                        var distanceFalloff = Math.Exp(-distanceSquared / (2 * neighborhoodRadiusSquared));
                         nodeToAdjust.UpdateWeights(trainingDataToMatch, learningRate, distanceFalloff);
                     }
                 }
@@ -332,11 +373,11 @@ namespace L2
         Node FindBestMatchingNode(Sample dataToMatch)
         {
             var bestMatchingNode = Grid[0, 0];
-            var bestDistance = float.MaxValue;
+            var bestDistance = double.MaxValue;
 
-            for (int j = 0; j < Height; j++)
+            for (int i = 0; i < Width; i++)
             {
-                for (int i = 0; i < Width; i++)
+                for (int j = 0; j < Height; j++)
                 {
                     var currentNode = Grid[i, j];
                     var currentDistance = currentNode.DistanceTo(dataToMatch);
@@ -350,6 +391,24 @@ namespace L2
             }
 
             return bestMatchingNode;
+        }
+
+        Sample FindBestMatchingSample(IEnumerable<Sample> ds, Node node)
+        {
+            var bestMatchingSample = ds.First();
+            var bestDistance = double.MaxValue;
+
+            foreach(var sample in ds)
+            {
+                var currentDistance = node.DistanceTo(sample);
+                if (currentDistance < bestDistance)
+                {
+                    bestMatchingSample = sample;
+                    bestDistance = currentDistance;
+                }
+            }
+
+            return bestMatchingSample;
         }
 
         #endregion
