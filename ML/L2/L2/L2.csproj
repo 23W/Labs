@@ -20,9 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Data\cars.csv">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="Data\cars1.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

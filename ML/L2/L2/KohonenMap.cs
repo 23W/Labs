@@ -18,6 +18,17 @@ namespace L2
         public Random Random { get; set; } = new Random();
     }
 
+    public class KohonenMapTestResult
+    {
+        public double QualityFactor { get; set; } = 0;
+
+        public double ErrorFactor { get; set; } = 0;
+
+        public int PositiveCount { get; set; } = 0;
+
+        public int NegativeCount { get; set; } = 0;
+    }
+
     public class KohonenMap
     {
         #region Nested class
@@ -211,9 +222,10 @@ namespace L2
             ClassifyNodes(ds);
         }
 
-        public double Test(IEnumerable<SampleWithClass> trainSet, IEnumerable<SampleWithClassEstimation> testSet)
+        public KohonenMapTestResult Test(IEnumerable<SampleWithClass> trainSet, IEnumerable<SampleWithClassEstimation> testSet)
         {
-            var errors = 0.0;
+            var res = new KohonenMapTestResult();
+
             foreach (var test in testSet)
             {
                 var node = FindBestMatchingNode(test);
@@ -228,6 +240,8 @@ namespace L2
                 test.E = estimation;
                 if (test.E != test.D)
                 {
+                    res.NegativeCount++;
+
                     var errorValue = 1.0;
                     if (node.Classes.ContainsKey(test.D) && node.Classes.ContainsKey(test.E))
                     {
@@ -237,11 +251,16 @@ namespace L2
                         errorValue = 1 - ((double)freq / total);
                     }
 
-                    errors += errorValue;
+                    res.ErrorFactor += errorValue;
+                }
+                else
+                {
+                    res.PositiveCount++;
                 }
             }
 
-            return errors;
+            res.QualityFactor = 1 - res.ErrorFactor / (res.PositiveCount + res.NegativeCount);
+            return res;
         }
 
         #endregion
