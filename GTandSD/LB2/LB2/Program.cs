@@ -1,16 +1,32 @@
 ﻿using LB2;
+using LB2.Utilities;
 
-Console.WriteLine("Greedy Algorithm");
+
+// Benchmark attempts
+const int attempts = 100;
 
 // Task data
 var efforts = new int[,] { { 4000, 7200 }, { 2800, 6400 }, { 4800, 8000 } };
 var sourceConstrains = new int[] { 1000, 1500, 1200 };
 var destinationConstrains = new int[] { 2300, 1400 };
 
-var greedyRes = Greedy.Solve((int[,])efforts.Clone(),
-                             (int[])sourceConstrains.Clone(),
-                             (int[])destinationConstrains.Clone());
 
-var simplexRes = Simplex.Solve((int[,])efforts.Clone(),
-                               (int[])sourceConstrains.Clone(),
-                               (int[])destinationConstrains.Clone());
+Console.WriteLine("Greedy Algorithm:");
+
+var greedyRes = BenchmarkUtilities.Measure(() => Greedy.Solve((int[,])efforts.Clone(),
+                                                              (int[])sourceConstrains.Clone(),
+                                                              (int[])destinationConstrains.Clone()), attempts);
+
+Console.WriteLine($"\tDuration: {greedyRes.Item2.TotalMilliseconds} ms");
+Console.WriteLine("\tResult:");
+ArrayUtilities.Output(greedyRes.Item1, "\t\t");
+
+
+Console.WriteLine("Simplex Algorithm:");
+
+var simplexRes = BenchmarkUtilities.Measure(() => Simplex.Solve((int[,])efforts.Clone(),
+                                                                (int[])sourceConstrains.Clone(),
+                                                                (int[])destinationConstrains.Clone()), attempts);
+Console.WriteLine($"\tDuration: {simplexRes.Item2.TotalMilliseconds} ms");
+Console.WriteLine("\tResult:");
+ArrayUtilities.Output(simplexRes.Item1, "\t\t");
