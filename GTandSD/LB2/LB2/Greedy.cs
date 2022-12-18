@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace LB2
 {
+    // Solves LP transport task by Greedy algorithm
     internal static class Greedy
     {
         internal static int[,] Solve(int[,] effort, int[] sourceConstrain, int[] destinationConstraing)
