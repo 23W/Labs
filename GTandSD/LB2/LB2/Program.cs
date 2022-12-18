@@ -6,9 +6,11 @@ using LB2.Utilities;
 const int attempts = 100;
 
 // Task data
-var efforts = new int[,] { { 4000, 7200 }, { 2800, 6400 }, { 4800, 8000 } };
-var sourceConstrains = new int[] { 1000, 1500, 1200 };
-var destinationConstrains = new int[] { 2300, 1400 };
+var efforts = new int[,] { { 4000, 5900 }, 
+                           {  900, 5400 }, 
+                           { 3200, 6000 } };
+var sourceConstrains = new int[] { 100, 150, 550 };
+var destinationConstrains = new int[] { 600, 200 };
 
 
 Console.WriteLine("Greedy Algorithm:");
