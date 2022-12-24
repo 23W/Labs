@@ -4,6 +4,12 @@
     {
         #region Nested classes
 
+        public struct Strategy
+        {
+            public int Finger { get; set; }
+            public int Number { get; set; }
+        }
+
         public struct Strategies
         {
             public List<int> Values { get; set; }
@@ -57,6 +63,17 @@
         #endregion
 
         #region Methods
+
+        public Strategy GetStrategyDetails(int strategyIndex)
+        {
+            var res = new Strategy()
+            {
+                Finger = (strategyIndex / m_fingers) + 1,
+                Number = (strategyIndex % m_fingers) + 1,
+            };
+
+            return res;
+        }
 
         public void Step()
         {

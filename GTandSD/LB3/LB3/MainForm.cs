@@ -26,7 +26,8 @@ namespace LB3
 
             for (var i = 0; i < Model.N; i++)
             {
-                m_reportView.Columns.Add(new ColumnHeader() { Text = $"B{i}" });
+                var datails = Model.GetStrategyDetails(i);
+                m_reportView.Columns.Add(new ColumnHeader() { Text = $"B({datails.Finger},{datails.Number})" });
             }
 
             if (showBest)
@@ -36,9 +37,11 @@ namespace LB3
 
             for (var j = 0; j < Model.M; j++)
             {
-                var item = new ListViewItem() 
+                var datails = Model.GetStrategyDetails(j);
+
+                var item = new ListViewItem()
                 {
-                    Text = $"A{j}",
+                    Text = $"A({datails.Finger},{datails.Number})",
                     UseItemStyleForSubItems = false
                 };
 
