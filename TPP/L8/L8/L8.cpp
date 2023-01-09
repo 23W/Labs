@@ -81,8 +81,8 @@ std::list<Position> ParalellSearch(int* data, size_t n, size_t m, int val)
 
 // Output:
 //
-// Serail duartion result:948909us
-// Parallel duartion result:174401us
+// Serail duration result:948909us
+// Parallel duration result:174401us
 // Performance:5,44096
 // Serial and Parallel results are equal
 // 
@@ -129,7 +129,7 @@ int main()
         auto end = std::chrono::high_resolution_clock::now();
         serialDuration = end - start;
 
-        std::cout << "Serail duartion result:";
+        std::cout << "Serail duration result:";
         std::cout << std::chrono::duration_cast<std::chrono::microseconds>(serialDuration) << std::endl;
     }
 
@@ -142,7 +142,7 @@ int main()
         auto end = std::chrono::high_resolution_clock::now();
         parallelDuration = end - start;
 
-        std::cout << "Parallel duartion result:";
+        std::cout << "Parallel duration result:";
         std::cout << std::chrono::duration_cast<std::chrono::microseconds>(parallelDuration) << std::endl;
     }
 
