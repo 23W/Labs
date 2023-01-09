@@ -159,11 +159,8 @@ int main()
 
         if (serialRes.size() == parallelRes.size())
         {
-            for (size_t i = 0; i < serialRes.size(); i++)
+            for (auto it1 = std::begin(serialRes), it2 = std::begin(parallelRes); it1!=std::end(serialRes); ++it1, ++it2)
             {
-                auto it1 = std::next(std::begin(serialRes), i);
-                auto it2 = std::next(std::begin(parallelRes), i);
-
                 if (it1->col != it2->col || 
                     it1->row != it2->row)
                 {
