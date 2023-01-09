@@ -150,7 +150,7 @@ int main()
     {
         const auto performance = static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(serialDuration).count()) /
                                  static_cast<double>(std::chrono::duration_cast<std::chrono::microseconds>(parallelDuration).count());
-        std::cout << "Performance:" << performance;
+        std::cout << "Performance:" << performance << std::endl;
     }
 
     // check results equality
